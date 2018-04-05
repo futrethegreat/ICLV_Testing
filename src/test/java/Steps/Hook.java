@@ -4,7 +4,9 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.ctc.Utils;
@@ -66,16 +68,16 @@ public class Hook extends BaseUtil {
 			chromeOptions.addArguments("headless");
 			chromeOptions.addArguments("window-size=1200x800");
 			return new ChromeDriver(chromeOptions);
-			// } else if (Utils.BROWSER == "FF") {
-			// FirefoxBinary firefoxBinary = new FirefoxBinary();
-			// firefoxBinary.addCommandLineOptions("--headless");
-			// FirefoxOptions firefoxOptions = new FirefoxOptions();
-			// firefoxOptions.setBinary(firefoxBinary);
-			// return new FirefoxDriver(firefoxOptions);
-			//
-			// // FirefoxOptions options = new FirefoxOptions();
-			// // options.setHeadless(true);
-			// // return new FirefoxDriver(options);
+		} else if (Utils.BROWSER == "FF") {
+			FirefoxBinary firefoxBinary = new FirefoxBinary();
+			firefoxBinary.addCommandLineOptions("--headless");
+			FirefoxOptions firefoxOptions = new FirefoxOptions();
+			firefoxOptions.setBinary(firefoxBinary);
+			return new FirefoxDriver(firefoxOptions);
+
+			// FirefoxOptions options = new FirefoxOptions();
+			// options.setHeadless(true);
+			// return new FirefoxDriver(options);
 		} else {
 			return new FirefoxDriver();
 		}
