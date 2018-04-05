@@ -1,7 +1,6 @@
 package Steps;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 import Base.BaseUtil;
 import Pages.ICLVHomePage;
@@ -81,7 +80,7 @@ public class LoginStep extends BaseUtil {
 		ICLVSignOutPage ICLVSignOutPage = new ICLVSignOutPage(base.driver);
 		assertEquals("SignOut text not found. Sign out not properly made.",
 				"USTED HA CERRADO EXITOSAMENTE SU SESIÓN EN TREFI", ICLVSignOutPage.getTxtSignOutText());
-		fail("FALLO AL FINAL");
+		// fail("FALLO AL FINAL");
 		Thread.sleep(2500);
 		base.driver.close();
 		base.driver.switchTo().window(parentHandle);
