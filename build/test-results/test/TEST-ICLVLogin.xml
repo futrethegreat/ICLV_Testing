@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="ICLVLogin" tests="1" skipped="0" failures="1" errors="0" timestamp="2018-04-05T11:27:41" hostname="ctc-pl-12" time="19.064">
+  <properties/>
+  <testcase name="Login with correct credentials and sign out afterwards." classname="ICLVLogin" time="19.064">
+    <failure message="java.lang.AssertionError: FALLO AL FINAL" type="java.lang.AssertionError">java.lang.AssertionError: FALLO AL FINAL
+	at org.junit.Assert.fail(Assert.java:88)
+	at Steps.LoginStep.thenIShouldSeeTheSignOutPage(LoginStep.java:84)
+	at ✽.I should see the Sign Out page(src/test/java/Features/ICLVLogin.feature:13)
+</failure>
+  </testcase>
+  <system-out><![CDATA[Before setting up browser driver for browser: FF
+
+Opening browser: FF for WINDOWS 10
+
+OS = WINDOWS 10, Browser = firefox 59.0.1
+
+]]></system-out>
+  <system-err><![CDATA[1522927662480	geckodriver	INFO	geckodriver 0.19.1
+1522927662486	geckodriver	INFO	Listening on 127.0.0.1:16487
+1522927663205	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "-marionette" "-profile" "C:\\Users\\DAVIDS~1\\AppData\\Local\\Temp\\rust_mozprofile.rmyA8119l5eZ"
+Unable to read VR Path Registry from C:\Users\DavidSauce\AppData\Local\openvr\openvrpaths.vrpath
+1522927664462	Marionette	INFO	Enabled via --marionette
+Unable to read VR Path Registry from C:\Users\DavidSauce\AppData\Local\openvr\openvrpaths.vrpath
+Unable to read VR Path Registry from C:\Users\DavidSauce\AppData\Local\openvr\openvrpaths.vrpath
+Unable to read VR Path Registry from C:\Users\DavidSauce\AppData\Local\openvr\openvrpaths.vrpath
+1522927666038	Marionette	INFO	Listening on port 49775
+Unable to read VR Path Registry from C:\Users\DavidSauce\AppData\Local\openvr\openvrpaths.vrpath
+1522927666316	Marionette	WARN	TLS certificate errors will be ignored for this session
+abr 05, 2018 1:27:46 PM org.openqa.selenium.remote.ProtocolHandshake createSession
+INFORMACIÓN: Detected dialect: W3C
+]]></system-err>
+</testsuite>

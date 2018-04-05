@@ -1,0 +1,34 @@
+plugins {
+  id "com.github.spacialcircumstances.gradle-cucumber-reporting" version "0.0.7"
+}
+
+// Apply the java-library plugin to add support for Java Library
+apply plugin: 'java-library'
+
+// In this section you declare where to find the dependencies of your project
+repositories {
+    // Use jcenter for resolving your dependencies.
+    // You can declare any Maven/Ivy/file repository here.
+    jcenter()
+}
+
+dependencies {
+	testImplementation group: 'org.dbunit', name: 'dbunit', version: '2.5.4'
+	testImplementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.2.2'
+	testImplementation group: 'junit', name: 'junit', version: '4.12'
+	testImplementation group: 'org.hamcrest', name: 'hamcrest-core', version: '1.3'
+    testImplementation group: 'org.hamcrest', name: 'hamcrest-library', version: '1.3'	
+    testImplementation group: 'io.cucumber', name: 'cucumber-junit', version:'2.3.1'
+    testImplementation group: 'io.cucumber', name: 'cucumber-java', version:'2.3.1'
+    testImplementation group: 'info.cukes', name: 'cucumber-picocontainer', version:'1.2.5'
+    testImplementation group: 'net.masterthought', name: 'maven-cucumber-reporting', version: '3.15.0'
+    testImplementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version:'3.9.1'
+    testImplementation group: 'com.h2database', name: 'h2', version: '1.4.197'
+}
+
+// configuracion del plugin cucumer-reporting
+cucumberReports {
+  outputDir = 'target/cucumber-report-html'
+  buildName = '0'
+  reports = files('target/cucumber.json')
+}
