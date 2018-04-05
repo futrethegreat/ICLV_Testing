@@ -2,6 +2,8 @@ package Steps;
 
 import static org.junit.Assert.assertEquals;
 
+import java.text.Normalizer;
+
 import Base.BaseUtil;
 import Pages.ICLVHomePage;
 import Pages.ICLVLoginPage;
@@ -78,8 +80,10 @@ public class LoginStep extends BaseUtil {
 	@Then("^I should see the Sign Out page$")
 	public void thenIShouldSeeTheSignOutPage() throws Throwable {
 		ICLVSignOutPage ICLVSignOutPage = new ICLVSignOutPage(base.driver);
+		String message = Normalizer.normalize(ICLVSignOutPage.getTxtSignOutText(), Normalizer.Form.NFD);
+		message = message.replaceAll("[^\\p{ASCII}]", "");
 		assertEquals("SignOut text not found. Sign out not properly made.",
-				"USTED HA CERRADO EXITOSAMENTE SU SESIÓN EN TREFI", ICLVSignOutPage.getTxtSignOutText());
+				"USTED HA CERRADO EXITOSAMENTE SU SESION EN TREFI", message);
 		// fail("FALLO AL FINAL");
 		Thread.sleep(2500);
 		base.driver.close();
