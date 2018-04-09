@@ -73,7 +73,7 @@ public class LoginStep extends BaseUtil {
 			assertEquals("Invoices link not found. Tool main page not reached", "Invoices",
 					ICLVToolMainPage.getLnkInvoicesText());
 		} catch (TimeoutException e) {
-			// Si está aquí es que falla la creación de la pagina de The Tool
+			// Si esta aqui es que falla la creacion de la pagina de The Tool
 			Utils.consoleMsg("No Tool main page");
 			try {
 				ICLVLoginPage ICLVLoginPage = new ICLVLoginPage(base.driver);
