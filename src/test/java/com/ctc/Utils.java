@@ -21,7 +21,7 @@ public class Utils {
 	public static final String dbTestingURL = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1";
 	public static final String dbTestingUser = "sa";
 	public static final String dbTestingPassword = "";
-	public final static String BROWSER = "FF"; // Options might be CH FF IE SF OP. H means Headless
+	public final static String BROWSER = "FFH"; // Options might be CH FF IE SF OP. H means Headless
 	public final static String OperatingSystem = System.getProperty("os.name").toLowerCase();
 
 	public static String dbIP;

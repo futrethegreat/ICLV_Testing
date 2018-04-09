@@ -98,7 +98,7 @@ public class LoginStep extends BaseUtil {
 			ICLVToolMainPage.clickLnkSignOut();
 			Utils.waitFor(2500);
 		} catch (Exception e) {
-			// Si entra aquí es que no hay página The Tool. Seguir hasta el cierre.
+			// Si entra aqui es que no hay pagina The Tool. Seguir hasta el cierre.
 			Utils.consoleMsg("No SignOut Link");
 		}
 	}
