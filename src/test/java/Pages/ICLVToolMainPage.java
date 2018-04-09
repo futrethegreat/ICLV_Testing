@@ -1,6 +1,7 @@
 package Pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -22,7 +23,7 @@ public class ICLVToolMainPage {
 	@FindBy(linkText = "Personal")
 	public WebElement lnkPersonal;
 
-	public ICLVToolMainPage(WebDriver driver) {
+	public ICLVToolMainPage(WebDriver driver) throws TimeoutException {
 		Utils.waitUntil_isPresent(driver, By.xpath("//*[@title=\"signout of TREFI\"]"));
 		PageFactory.initElements(driver, this);
 	}

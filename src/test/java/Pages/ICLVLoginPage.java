@@ -1,6 +1,8 @@
 package Pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -18,7 +20,7 @@ public class ICLVLoginPage {
 	@FindBy(xpath = "//*[@id=\"enrollform\"]/div/span")
 	public WebElement txtErrorLogIn;
 
-	public ICLVLoginPage(WebDriver driver) {
+	public ICLVLoginPage(WebDriver driver) throws TimeoutException {
 		Utils.waitUntil_isPresent(driver, By.name("signinid"));
 		PageFactory.initElements(driver, this);
 	}
@@ -46,7 +48,7 @@ public class ICLVLoginPage {
 		this.btnLogIn.click();
 	}
 
-	public String getErrorText() {
-		return this.txtErrorLogIn.getText().trim();
+	public String getErrorText() throws NoSuchElementException {
+		return Utils.normalizeString(this.txtErrorLogIn.getText().trim());
 	}
 }

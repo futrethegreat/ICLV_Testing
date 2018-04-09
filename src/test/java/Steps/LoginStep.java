@@ -1,8 +1,12 @@
 package Steps;
 
 import static org.junit.Assert.assertEquals;
+//import static org.junit.Assert.fail;
 
-import java.text.Normalizer;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.TimeoutException;
+
+import com.ctc.Utils;
 
 import Base.BaseUtil;
 import Pages.ICLVHomePage;
@@ -53,7 +57,7 @@ public class LoginStep extends BaseUtil {
 	public void whenIEnterUsernameAndPassword(String userName, String password) throws Throwable {
 		ICLVLoginPage ICLVLoginPage = new ICLVLoginPage(base.driver);
 		ICLVLoginPage.typeCredentials(userName, password);
-		Thread.sleep(2500);
+		Utils.waitFor(2500);
 	}
 
 	@And("^I click Login button$")
@@ -63,65 +67,56 @@ public class LoginStep extends BaseUtil {
 	}
 
 	@Then("^I should see the Tool main page$")
-	public void thenIShouldSeeTheToolMainPage() throws Throwable {
-		ICLVToolMainPage ICLVToolMainPage = new ICLVToolMainPage(base.driver);
-		assertEquals("Invoices link not found. Tool main page not reached", "Invoices",
-				ICLVToolMainPage.getLnkInvoicesText());
-		Thread.sleep(2500);
+	public void thenIShouldSeeTheToolMainPage() throws Exception {
+		try {
+			ICLVToolMainPage ICLVToolMainPage = new ICLVToolMainPage(base.driver);
+			assertEquals("Invoices link not found. Tool main page not reached", "Invoices",
+					ICLVToolMainPage.getLnkInvoicesText());
+		} catch (TimeoutException e) {
+			// Si está aquí es que falla la creación de la pagina de The Tool
+			Utils.consoleMsg("No Tool main page");
+			try {
+				ICLVLoginPage ICLVLoginPage = new ICLVLoginPage(base.driver);
+				assertEquals("Error message not found.", "Ingreso erroneo, por favor trate de nuevo",
+						ICLVLoginPage.getErrorText());
+				Utils.consoleMsg("Mensaje error: " + ICLVLoginPage.getErrorText());
+			} catch (NoSuchElementException e1) {
+				Utils.consoleMsg("No error message either. One credentials field must be empty");
+
+			} catch (TimeoutException e2) {
+				Utils.consoleMsg("Too many failed attemps");
+			}
+		}
+
+		Utils.waitFor(2500);
 	}
 
 	@When("^I click on Sign Out link$")
-	public void whenIClickOnSignOutLink() throws Throwable {
-		ICLVToolMainPage ICLVToolMainPage = new ICLVToolMainPage(base.driver);
-		ICLVToolMainPage.clickLnkSignOut();
-		Thread.sleep(2500);
+	public void whenIClickOnSignOutLink() {
+		try {
+			ICLVToolMainPage ICLVToolMainPage = new ICLVToolMainPage(base.driver);
+			ICLVToolMainPage.clickLnkSignOut();
+			Utils.waitFor(2500);
+		} catch (Exception e) {
+			// Si entra aquí es que no hay página The Tool. Seguir hasta el cierre.
+			Utils.consoleMsg("No SignOut Link");
+		}
 	}
 
 	@Then("^I should see the Sign Out page$")
-	public void thenIShouldSeeTheSignOutPage() throws Throwable {
-		ICLVSignOutPage ICLVSignOutPage = new ICLVSignOutPage(base.driver);
-		String message = Normalizer.normalize(ICLVSignOutPage.getTxtSignOutText(), Normalizer.Form.NFD);
-		message = message.replaceAll("[^\\p{ASCII}]", "");
-		assertEquals("SignOut text not found. Sign out not properly made.",
-				"USTED HA CERRADO EXITOSAMENTE SU SESION EN TREFI", message);
-		// fail("FALLO AL FINAL");
-		Thread.sleep(2500);
+	public void thenIShouldSeeTheSignOutPage() {
+		try {
+			ICLVSignOutPage ICLVSignOutPage = new ICLVSignOutPage(base.driver);
+			assertEquals("SignOut text not found. Sign out not properly made.",
+					"USTED HA CERRADO EXITOSAMENTE SU SESION EN TREFI", ICLVSignOutPage.getTxtSignOutText());
+			// fail("FALLO AL FINAL");
+			Utils.waitFor(2500);
+		} catch (Exception e) {
+			// Si entra aquí es que no hay página de Sign Out correcta. Seguir hasta el
+			// cierre.
+			Utils.consoleMsg("No SignOut message");
+		}
 		base.driver.close();
 		base.driver.switchTo().window(parentHandle);
 	}
-
-	@Then("^I should receive error message$")
-	public void thenIShouldReceiveErrorMessage() throws Throwable {
-
-		Thread.sleep(5000);
-		base.driver.close();
-		base.driver.switchTo().window(parentHandle);
-	}
-
-	/*
-	 * @And("^On Secure Trefi Page I enter ([^\"]*) and ([^\\\"]*)$") public void
-	 * andIEnterCredentials(String UserName, String Password) throws Throwable {
-	 * SecureTrefiLoginPage PageSecureTrefi = new SecureTrefiLoginPage(base.driver);
-	 * PageSecureTrefi.Login(UserName, Password);
-	 * 
-	 * Utils.consoleMsg("Username: " + UserName); Utils.consoleMsg("Password: " +
-	 * Password); Thread.sleep(Wait2secs); }
-	 * 
-	 * @And("^I click Login button$") public void andIClickLoginButton() throws
-	 * Throwable { SecureTrefiLoginPage PageSecureTrefi = new
-	 * SecureTrefiLoginPage(base.driver); PageSecureTrefi.clickLogInBtn(); }
-	 * 
-	 * @Then("^I should see the Tool main page$") public void
-	 * thenIShouldSeeTheToolMainPage() throws Throwable { SecureTrefiLoginPage
-	 * PageSecureTrefi = new SecureTrefiLoginPage(base.driver); try { //
-	 * Functions.consoleMsg(PageSecureTrefi.getLblLoginFailed()); // Si llega aqui
-	 * es que el mensaje de error existia -> Login incorrecto
-	 * PageSecureTrefi.clickLogInBtn(); assertEquals(PageSecureTrefi.getErrorText(),
-	 * "Sign in failed, please try again", "No error login text. Login succesful");
-	 * sleep(Wait2secs); } catch (Exception e) { // Si entra aqui es que no hay
-	 * mensaje de error -> Login correcto // e.printStackTrace();
-	 * Utils.consoleMsg("Login correcto"); Thread.sleep(Wait2secs); //
-	 * PageSecureTrefi.clickLogoutLnk(); // Thread.sleep(Wait2secs); } }
-	 */
-
 }

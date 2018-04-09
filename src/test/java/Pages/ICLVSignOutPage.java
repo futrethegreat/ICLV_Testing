@@ -14,13 +14,13 @@ public class ICLVSignOutPage {
 	@FindBy(linkText = "Acceso")
 	public WebElement lnkAcceso;
 
-	public ICLVSignOutPage(WebDriver driver) {
+	public ICLVSignOutPage(WebDriver driver) throws Exception {
 		Utils.waitUntil_isPresent(driver, By.xpath("/html/body/div/section/div/div[1]/h2"));
 		PageFactory.initElements(driver, this);
 	}
 
 	public String getTxtSignOutText() {
-		return this.txtSignOut.getText().toString();
+		return Utils.normalizeString(this.txtSignOut.getText().toString());
 	}
 
 	public String getLnkAccesoText() {

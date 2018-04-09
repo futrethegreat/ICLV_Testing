@@ -63,12 +63,12 @@ public class Hook extends BaseUtil {
 		// driver se puede usar en LoginStep por dependency injection usando
 		// picocontainer
 		// (hook y loginstep extienden base)
-		if (Utils.BROWSER == "CH") {
+		if (Utils.BROWSER == "CHH") {
 			ChromeOptions chromeOptions = new ChromeOptions();
 			chromeOptions.addArguments("headless");
 			chromeOptions.addArguments("window-size=1200x800");
 			return new ChromeDriver(chromeOptions);
-		} else if (Utils.BROWSER == "FF") {
+		} else if (Utils.BROWSER == "FFH") {
 			FirefoxBinary firefoxBinary = new FirefoxBinary();
 			firefoxBinary.addCommandLineOptions("--headless");
 			FirefoxOptions firefoxOptions = new FirefoxOptions();
@@ -78,6 +78,10 @@ public class Hook extends BaseUtil {
 			// FirefoxOptions options = new FirefoxOptions();
 			// options.setHeadless(true);
 			// return new FirefoxDriver(options);
+		} else if (Utils.BROWSER == "CH") {
+			return new ChromeDriver();
+		} else if (Utils.BROWSER == "FF") {
+			return new FirefoxDriver();
 		} else {
 			return new FirefoxDriver();
 		}
