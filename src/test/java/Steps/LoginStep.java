@@ -112,7 +112,7 @@ public class LoginStep extends BaseUtil {
 			// fail("FALLO AL FINAL");
 			Utils.waitFor(2500);
 		} catch (Exception e) {
-			// Si entra aquí es que no hay página de Sign Out correcta. Seguir hasta el
+			// Si entra aqui es que no hay página de Sign Out correcta. Seguir hasta el
 			// cierre.
 			Utils.consoleMsg("No SignOut message");
 		}
