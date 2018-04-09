@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+  <authors AuthorID="1" AuthorName="Miguel de Cervantes"/>
+  <authors AuthorID="2" AuthorName="Eduardo Mendoza"/>
+  <authors AuthorID="3" AuthorName="J.R.R. Tolkien"/>
+  <authors AuthorID="4" AuthorName="Pedro Calderón de la Barca"/>
+  <authors AuthorID="8" AuthorName="Francisco Ibañez"/>
+  <books BookID="1" BookTitle="El ingenioso hidalgo don Quijote de la Mancha" AuthorID="1" Lent="1"/>
+  <books BookID="2" BookTitle="Sin noticias de Gurb" AuthorID="2" Lent="1"/>
+  <books BookID="3" BookTitle="La verdad sobre el caso Savolta" AuthorID="2" Lent="1"/>
+  <books BookID="4" BookTitle="El misterio de la cripta embrujada" AuthorID="2" Lent="0"/>
+  <books BookID="5" BookTitle="La aventura del tocador de señoras" AuthorID="2" Lent="0"/>
+  <books BookID="6" BookTitle="La vida es sueño" AuthorID="4" Lent="0"/>
+  <books BookID="7" BookTitle="El señor de los anillos: La comunidad del anillo" AuthorID="3" Lent="0"/>
+  <books BookID="8" BookTitle="El señor de los anillos: Las dos torres" AuthorID="3" Lent="0"/>
+  <books BookID="9" BookTitle="El señor de los anillos: El retorno del rey" AuthorID="3" Lent="0"/>
+  <books BookID="10" BookTitle="El Hobbit" AuthorID="3" Lent="0"/>
+  <books BookID="11" BookTitle="Novelas ejemplares" AuthorID="1" Lent="0"/>
+  <books BookID="12" BookTitle="La galatea" AuthorID="1" Lent="0"/>
+  <books BookID="13" BookTitle="El alcalde de Zalamea" AuthorID="4" Lent="0"/>
+  <users UserID="1" UserName="Peter Parker" BorrowedBooks="2"/>
+  <users UserID="2" UserName="Bruce Banner" BorrowedBooks="1"/>
+  <users UserID="3" UserName="Bruce Wayne" BorrowedBooks="0"/>
+  <users UserID="4" UserName="Clark Kent" BorrowedBooks="0"/>
+  <users UserID="5" UserName="Tony Stark" BorrowedBooks="0"/>
+  <users UserID="6" UserName="Mortadelo" BorrowedBooks="0"/>
+  <loans BookID="1" UserID="1" LoanStartDate="2018-03-05" LoanEndDate="2018-04-05"/>
+  <loans BookID="2" UserID="1" LoanStartDate="2018-03-06" LoanEndDate="2018-04-06"/>
+  <loans BookID="3" UserID="2" LoanStartDate="2018-03-12" LoanEndDate="2018-04-12"/>
+</dataset>

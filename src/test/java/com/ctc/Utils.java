@@ -66,14 +66,18 @@ public class Utils {
 			path2XML = "src/resources/";
 			dbTestingSchema = "src/resources/library_struct.sql";
 
-			if (BROWSER == "FF") {
+			if ((BROWSER == "FF") || (BROWSER == "FFH")) {
 				DriverFile = FirefoxDriverFileLinux;
 				DriverType = FirefoxDriverType;
-			} else if (BROWSER == "CH") {
+			} else if ((BROWSER == "CH") || (BROWSER == "CHH")) {
 				DriverFile = ChromeDriverFileLinux;
 				DriverType = ChromeDriverType;
 			}
 		}
+		
+		consoleMsg("User.dir: " + System.getProperty("user.dir"));
+		consoleMsg("DriverFile: " + DriverFile);
+		consoleMsg("DriverType: " + DriverType);
 	}
 
 	public static void consoleMsg(String msg) {
