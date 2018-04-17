@@ -15,24 +15,24 @@ Feature: ICLVLogin
     Examples: 
       | UserName   | Password |
       | davidsauce | Welcome1 |
-      | davidsauc3 | Welcome1 |
-      | davidsauce | Welcome2 |
-      |   | Welcome1 |
-      | davidsauce |   |
-      |   |   |
+      #| davidsauc3 | Welcome1 |
+      #| davidsauce | Welcome2 |
+      #|   | Welcome1 |
+      #| davidsauce |   |
+      #|   |   |
       
-  #Scenario Outline: Login with incorrect credentials
-    #Given I navigate to the ICLV home page
-    #When I click on Sign In link
-    #Then I should see the Login Page
-    #When I enter <UserName> and <Password>
-    #And I click Login button
-    #Then I should receive error message
-#
-    #Examples: 
-      #| UserName   | Password |
-      #| davidsauce | Welcome2 | 
-      #| davidsauc3 | Welcome1 | 
-      #| davidsauce |  |
-      #|  | Welcome2 |
-      #|  |  |
+  Scenario Outline: Login with incorrect and empty credentials
+    Given I navigate to the ICLV home page
+    When I click on Sign In link
+    Then I should see the Login Page
+    When I enter <UserName> and <Password>
+    And I click Login button
+    Then I should receive error message
+
+    Examples: 
+      | UserName   | Password |
+      | davidsauce | Welcome2 | 
+      | davidsauc3 | Welcome1 | 
+      | davidsauce |  |
+      |  | Welcome2 |
+      |  |  |

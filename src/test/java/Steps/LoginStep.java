@@ -119,4 +119,20 @@ public class LoginStep extends BaseUtil {
 		base.driver.close();
 		base.driver.switchTo().window(parentHandle);
 	}
+
+	@Then("^I should receive error message$")
+	public void thenIShouldReceiveErrorMessage() throws Exception {
+		ICLVLoginPage ICLVLoginPage = new ICLVLoginPage(base.driver);
+		try {
+			assertEquals("Error message not found.", "Ingreso erroneo, por favor trate de nuevo",
+					ICLVLoginPage.getErrorText());
+			Utils.consoleMsg("Mensaje error: " + ICLVLoginPage.getErrorText());
+		} catch (NoSuchElementException e1) {
+			Utils.consoleMsg("No error message either. One credentials field must be empty");
+			assertEquals("User name field NOT found. Login page NOT reached.", "", ICLVLoginPage.getUserName());
+		} catch (TimeoutException e2) {
+			Utils.consoleMsg("Too many failed attemps");
+		}
+
+	}
 }

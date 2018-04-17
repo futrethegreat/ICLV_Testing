@@ -19,6 +19,8 @@ public class ICLVLoginPage {
 	public WebElement btnLogIn;
 	@FindBy(xpath = "//*[@id=\"enrollform\"]/div/span")
 	public WebElement txtErrorLogIn;
+	@FindBy(name = "submit") // LinkedIn button
+	public WebElement btnLinkedIn;
 
 	public ICLVLoginPage(WebDriver driver) throws TimeoutException {
 		Utils.waitUntil_isPresent(driver, By.name("signinid"));
@@ -46,6 +48,10 @@ public class ICLVLoginPage {
 
 	public void clickLogInBtn() {
 		this.btnLogIn.click();
+	}
+
+	public void clickLinkedInBtn() {
+		this.btnLinkedIn.click();
 	}
 
 	public String getErrorText() throws NoSuchElementException {
