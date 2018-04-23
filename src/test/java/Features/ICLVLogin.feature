@@ -1,4 +1,4 @@
-@Feature
+@ICLVLogin
 Feature: ICLVLogin
   This feature deals with the login functionality of the ICLV web page.
 

@@ -11,6 +11,9 @@ repositories {
     // You can declare any Maven/Ivy/file repository here.
     jcenter()
 }
+test {
+  systemProperty "cucumber.options", System.properties.getProperty("cucumber.options")
+}
 
 dependencies {
 	testImplementation group: 'org.dbunit', name: 'dbunit', version: '2.5.4'
