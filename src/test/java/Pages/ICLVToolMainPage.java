@@ -39,4 +39,10 @@ public class ICLVToolMainPage {
 	public void clickLnkSignOut() {
 		this.lnkSignOut.click();
 	}
+
+	public void clickLnkPayables(WebDriver driver) {
+		Utils.waitUntil_isClickable(driver, lnkPayables);
+		lnkPayables.click();
+	}
+
 }

@@ -22,7 +22,7 @@ public class Utils {
 	public static final String dbTestingURL = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1";
 	public static final String dbTestingUser = "sa";
 	public static final String dbTestingPassword = "";
-	public final static String BROWSER = "FFH"; // Options might be CH FF IE SF OP. H means Headless
+	public final static String BROWSER = "FF"; // Options might be CH FF IE SF OP. H means Headless
 	public final static String OperatingSystem = System.getProperty("os.name").toLowerCase();
 
 	public static String dbIP;
@@ -88,39 +88,39 @@ public class Utils {
 
 	public static boolean waitUntil_isPresent(final WebDriver driver, final By locator) throws TimeoutException {
 		try {
-			WebDriverWait wait = new WebDriverWait(driver, 5);
+			WebDriverWait wait = new WebDriverWait(driver, 10);
 			wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+			return true;
 		} catch (TimeoutException te) {
 			// te.printStackTrace();
 			// return false;
 			throw new TimeoutException();
 		}
-		return true;
 
 	}
 
 	public static boolean waitUntil_isClickable(final WebDriver driver, final By locator) throws TimeoutException {
 		try {
-			WebDriverWait wait = new WebDriverWait(driver, 5);
+			WebDriverWait wait = new WebDriverWait(driver, 10);
 			wait.until(ExpectedConditions.elementToBeClickable(locator));
+			return true;
 		} catch (TimeoutException te) {
 			// te.printStackTrace();
 			// return false;
 			throw new TimeoutException();
 		}
-		return true;
 	}
 
 	public static boolean waitUntil_isClickable(final WebDriver driver, final WebElement WE) throws TimeoutException {
 		try {
-			WebDriverWait wait = new WebDriverWait(driver, 5);
+			WebDriverWait wait = new WebDriverWait(driver, 10);
 			wait.until(ExpectedConditions.elementToBeClickable(WE));
+			return true;
 		} catch (TimeoutException te) {
 			// te.printStackTrace();
 			// return false;
 			throw new TimeoutException();
 		}
-		return true;
 	}
 
 	public static String normalizeString(String s) {
@@ -132,4 +132,5 @@ public class Utils {
 	public static void waitFor(long m) throws InterruptedException {
 		Thread.sleep(0);
 	}
+
 }

@@ -11,11 +11,28 @@ import org.openqa.selenium.WebElement;
 import com.ctc.Utils;
 
 import Base.BaseUtil;
+import Pages.ICLVPayablesPage;
+import Pages.ICLVToolMainPage;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
+/**
+ * @author DavidSauce
+ * 
+ *         Implements ICLVPayment.feature steps:
+ * 
+ *         Scenario Outline: Login with correct credentials and sign out
+ *         afterwards. Given I navigate to the ICLV home page When I click on
+ *         Sign In link Then I should see the Login Page When I enter <UserName>
+ *         and <Password> And I click Login button Then I should see the Tool
+ *         main page Given I click the Payables tab When I click first invoice
+ *         to pay And I click the Pay invoice implementation And I enter the
+ *         amount 1.1 And I click Execute Then Open amount of invoice is
+ *         decreased by 1.1
+ *
+ */
 public class PaymentStep extends BaseUtil {
 
 	String parentHandle;
@@ -31,9 +48,12 @@ public class PaymentStep extends BaseUtil {
 
 	@Given("^I click the Payables tab$")
 	public void givenIClickThePayablesTab() {
-		Utils.waitUntil_isPresent(base.driver, By.linkText("Payables"));
-		WebElement lnkPayables = base.driver.findElement(By.linkText("Payables"));
-		lnkPayables.click();
+
+		ICLVToolMainPage ICLVToolMainPage = new ICLVToolMainPage(base.driver);
+		ICLVToolMainPage.clickLnkPayables(base.driver);
+//		 Utils.waitUntil_isPresent(base.driver, By.linkText("Payables"));
+//		 WebElement lnkPayables = base.driver.findElement(By.linkText("Payables"));
+//		 lnkPayables.click();
 	}
 
 	@When("^I click first invoice to pay$")
@@ -43,38 +63,50 @@ public class PaymentStep extends BaseUtil {
 		for (String winHandle : base.driver.getWindowHandles()) {
 			base.driver.switchTo().window(winHandle);
 		}
-
-		// Access table data
-		Utils.waitUntil_isPresent(base.driver, By.id("ot80"));
-		WebElement InvoicesTable = base.driver.findElement(By.id("ot80"));
-		// Table rows
-		List<WebElement> tableRows = InvoicesTable.findElements(By.tagName("tr"));
-		// Row#1 columns
-		List<WebElement> rowCells = tableRows.get(1).findElements(By.tagName("td"));
-		// Click on first data row
-		Utils.waitUntil_isClickable(base.driver, rowCells.get(1));
-		rowCells.get(1).click();
+		ICLVPayablesPage ICLVPayablesPage = new ICLVPayablesPage(base.driver);
+		ICLVPayablesPage.clickTblInvoices1stRow(base.driver);
+		
+//		// Access table data
+//		 Utils.waitUntil_isPresent(base.driver, By.id("ot80"));
+//		 WebElement InvoicesTable = base.driver.findElement(By.id("ot80"));
+//		// Table rows
+//		 List<WebElement> tableRows = InvoicesTable.findElements(By.tagName("tr"));
+//		// // Row#1 columns
+//		 List<WebElement> rowCells = tableRows.get(1).findElements(By.tagName("td"));
+//		// // Click on first data row
+//		 Utils.waitUntil_isClickable(base.driver, rowCells.get(1));
+//		 rowCells.get(1).click();
 	}
 
 	@And("^I click the Pay invoice implementation$")
 	public void andIClickThePayInvoiceImplementation() {
-		// Click on list box row to unfold
-		WebElement lstOption = base.driver.findElement(By.xpath("//*[@id=\"selectedActTypeid_chosen\"]/a/div/b"));
-		lstOption.click();
-		// Click on Pay invoice option from the list
-		lstOption = base.driver.findElement(By.xpath("//*[@id=\"selectedActTypeid_chosen\"]/div/ul/li[1]"));
-		lstOption.click();
+		
+		ICLVPayablesPage ICLVPayablesPage = new ICLVPayablesPage(base.driver);
+		ICLVPayablesPage.clickLstOption();
+		ICLVPayablesPage.clickLstOptionPayInvoice();
+		
+//		// Click on list box row to unfold
+//		WebElement lstOption = base.driver.findElement(By.xpath("//*[@id=\"selectedActTypeid_chosen\"]/a/div/b"));
+//		lstOption.click();
+//		// Click on Pay invoice option from the list
+//		lstOption = base.driver.findElement(By.xpath("//*[@id=\"selectedActTypeid_chosen\"]/div/ul/li[1]"));
+//		lstOption.click();
 	}
 
 	@And("^I enter the amount (.+)$")
 	public void andIEnterTheAmount(BigDecimal amount) {
-		// Wait until the list is folded and the Amount field is displayed again. Then
-		// type an amount.
-		Utils.waitUntil_isPresent(base.driver, By.id("PAYAMT"));
-		WebElement txtAmount = base.driver.findElement(By.id("PAYAMT"));
-		txtAmount.clear();
-		txtAmount.sendKeys(amount.toString());
+		
+		ICLVPayablesPage ICLVPayablesPage = new ICLVPayablesPage(base.driver);
+		ICLVPayablesPage.setTxtAmount(base.driver, amount.toString());
+		
+//		// Wait until the list is folded and the Amount field is displayed again. Then
+//		// type an amount.
+//		Utils.waitUntil_isPresent(base.driver, By.id("PAYAMT"));
+//		WebElement txtAmount = base.driver.findElement(By.id("PAYAMT"));
+//		txtAmount.clear();
+//		txtAmount.sendKeys(amount.toString());
 
+		// These lines are just for checking operation and display in console.
 		WebElement InvoicesTable = base.driver.findElement(By.id("ot80"));
 		List<WebElement> tableRows = InvoicesTable.findElements(By.tagName("tr"));
 		List<WebElement> rowCells = tableRows.get(1).findElements(By.tagName("td"));
@@ -85,32 +117,42 @@ public class PaymentStep extends BaseUtil {
 
 	@And("^I click Execute$")
 	public void andIClickExecute() {
-		// Click on Execute button
-		WebElement btnExecute = base.driver.findElement(By.id("execute1"));
-		btnExecute.click();
-		Utils.waitUntil_isClickable(base.driver, By.id("confirmok"));
-		WebElement btnOK = base.driver.findElement(By.id("confirmok"));
-		btnOK.click();
 
+		ICLVPayablesPage ICLVPayablesPage = new ICLVPayablesPage(base.driver);
+		ICLVPayablesPage.clickBtnExecute(base.driver);
+		ICLVPayablesPage.clickBtnConfirmOK(base.driver);
+		
+//		// Click on Execute button
+//		WebElement btnExecute = base.driver.findElement(By.id("execute1"));
+//		btnExecute.click();
+//		Utils.waitUntil_isClickable(base.driver, By.id("confirmok"));
+//		WebElement btnOK = base.driver.findElement(By.id("confirmok"));
+//		btnOK.click();
 	}
 
 	@Then("^Open amount of invoice is decreased by (.+)$")
 	public void thenOpenAmountOfInvoiceIsDecreasedBy(BigDecimal amount) throws InterruptedException {
-		// Click on Refresh button
-		Utils.waitUntil_isClickable(base.driver, By.id("refreshicon"));
-		Utils.waitUntil_isClickable(base.driver, By.id("refreshicon"));
-		WebElement btnRefresh = base.driver.findElement(By.id("refreshicon"));
-		btnRefresh.click();
-		// Thread.sleep(1500); // ESTA ESPERA HAY QUE HACERLO DINAMICO
-		Utils.waitUntil_isClickable(base.driver, By.id("refreshicon"));
-		Utils.waitUntil_isClickable(base.driver, By.id("refreshicon"));
-		WebElement InvoicesTable = base.driver.findElement(By.id("ot80"));
-		List<WebElement> tableRows = InvoicesTable.findElements(By.tagName("tr"));
-		List<WebElement> rowCells = tableRows.get(1).findElements(By.tagName("td"));
-		nextAmount = new BigDecimal(rowCells.get(6).getText().replace(",", ""));
-
+		ICLVPayablesPage ICLVPayablesPage = new ICLVPayablesPage(base.driver);
+		ICLVPayablesPage.clickBtnRefresh(base.driver);
+		
+		nextAmount = new BigDecimal(ICLVPayablesPage.getTblInvoices1stRowAmount(base.driver));
 		assertEquals("Open amount is not correct.", expectedAmount.toString(), nextAmount.toString());
+		
+//		// Click on Refresh button
+//		Thread.sleep(1500); // ESTA ESPERA HAY QUE HACERLO DINAMICO
+//		WebElement btnRefresh = base.driver.findElement(By.id("refreshicon"));
+//		Utils.waitUntil_isClickable(base.driver, btnRefresh);
+//		btnRefresh.click();
+//		Utils.waitUntil_isClickable(base.driver, btnRefresh);
+//		
+//		WebElement InvoicesTable = base.driver.findElement(By.id("ot80"));
+//		List<WebElement> tableRows = InvoicesTable.findElements(By.tagName("tr"));
+//		List<WebElement> rowCells = tableRows.get(1).findElements(By.tagName("td"));
+//		Utils.waitUntil_isClickable(base.driver, rowCells.get(6));
+//		nextAmount = new BigDecimal(rowCells.get(6).getText().replace(",", ""));
+//		assertEquals("Open amount is not correct.", expectedAmount.toString(), nextAmount.toString());
 
+		// These lines are just for checking operation and display in console.
 		Utils.consoleMsg("Previous: " + previousAmount.toString() + " - Expected: " + expectedAmount.toString()
 				+ " - Returned: " + nextAmount.toString());
 		if (expectedAmount.compareTo(nextAmount) == 0) {
