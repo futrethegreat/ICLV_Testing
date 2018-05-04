@@ -22,7 +22,7 @@ public class Utils {
 	public static final String dbTestingURL = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1";
 	public static final String dbTestingUser = "sa";
 	public static final String dbTestingPassword = "";
-	public final static String BROWSER = "FF"; // Options might be CH FF IE SF OP. H means Headless
+	public final static String BROWSER = "FFH"; // Options might be CH FF IE SF OP. H means Headless
 	public final static String OperatingSystem = System.getProperty("os.name").toLowerCase();
 
 	public static String dbIP;
@@ -97,6 +97,19 @@ public class Utils {
 			throw new TimeoutException();
 		}
 
+	}
+
+	public static boolean waitUntil_isNotPresent(final WebDriver driver, final By locator) throws TimeoutException {
+		try {
+			WebDriverWait wait = new WebDriverWait(driver, 10);
+			wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
+			return true;
+		} catch (TimeoutException te) {
+			// te.printStackTrace();
+			// return false;
+			throw new TimeoutException();
+		}
+		
 	}
 
 	public static boolean waitUntil_isClickable(final WebDriver driver, final By locator) throws TimeoutException {

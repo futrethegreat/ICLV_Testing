@@ -15,18 +15,37 @@ test {
   systemProperty "cucumber.options", System.properties.getProperty("cucumber.options")
 }
 
+
+ext.libs = "$projectDir/libs"
+ext.compileLib = "${libs}/compile"
+ext.runtimeLib = "${libs}/runtime"
+ext.implementationLib = "${libs}/implementation"
+ext.testCompileLib = "${libs}/testCompile"
+ext.testRuntimeLib = "${libs}/testRuntime"
+ext.testImplementationLib = "${libs}/testImplementation"
+ext.providedCompileLib = "${libs}/providedCompile"
+
 dependencies {
-	testImplementation group: 'org.dbunit', name: 'dbunit', version: '2.5.4'
-	testImplementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.2.2'
-	testImplementation group: 'junit', name: 'junit', version: '4.12'
-	testImplementation group: 'org.hamcrest', name: 'hamcrest-core', version: '1.3'
-    testImplementation group: 'org.hamcrest', name: 'hamcrest-library', version: '1.3'	
-    testImplementation group: 'io.cucumber', name: 'cucumber-junit', version:'2.3.1'
-    testImplementation group: 'io.cucumber', name: 'cucumber-java', version:'2.3.1'
-    testImplementation group: 'info.cukes', name: 'cucumber-picocontainer', version:'1.2.5'
-    testImplementation group: 'net.masterthought', name: 'maven-cucumber-reporting', version: '3.15.0'
-    testImplementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version:'3.9.1'
-    testImplementation group: 'com.h2database', name: 'h2', version: '1.4.197'
+    if (gradle.startParameter.isOffline()) {
+        compile fileTree(dir: compileLib)
+        runtime fileTree(dir: implementationLib)
+        implementation fileTree(dir: runtimeLib)
+        testCompile fileTree(dir: testCompileLib)
+        testRuntime fileTree(dir: testRuntimeLib)
+        testImplementation fileTree(dir: testImplementationLib)
+    } else {
+		testCompile group: 'org.dbunit', name: 'dbunit', version: '2.5.4'
+		testCompile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.2.2'
+		testCompile group: 'junit', name: 'junit', version: '4.12'
+		testCompile group: 'org.hamcrest', name: 'hamcrest-core', version: '1.3'
+	    testCompile group: 'org.hamcrest', name: 'hamcrest-library', version: '1.3'	
+	    testCompile group: 'io.cucumber', name: 'cucumber-junit', version:'2.3.1'
+	    testCompile group: 'io.cucumber', name: 'cucumber-java', version:'2.3.1'
+	    testCompile group: 'info.cukes', name: 'cucumber-picocontainer', version:'1.2.5'
+	    testCompile group: 'net.masterthought', name: 'maven-cucumber-reporting', version: '3.15.0'
+	    testCompile group: 'org.seleniumhq.selenium', name: 'selenium-java', version:'3.9.1'
+	    testCompile group: 'com.h2database', name: 'h2', version: '1.4.197'
+	}
 }
 
 // configuracion del plugin cucumer-reporting
@@ -34,4 +53,22 @@ cucumberReports {
   outputDir = 'target/cucumber-report-html'
   buildName = '0'
   reports = files('target/cucumber.json')
+}
+
+task deleteLibs(type: Delete) {
+    delete 'libs/compile'
+    delete 'libs/runtime'
+    delete 'libs/implementation'
+    delete 'libs/testCompile'
+    delete 'libs/testRuntime'
+    delete 'libs/testImplementation'
+}
+
+task copyToLibs(dependsOn: 'deleteLibs') << {
+    ['compile', 'runtime', 'testCompile', 'testRuntime'].each { scope ->
+        copy {
+            from configurations.getByName(scope).files
+            into "${libs}/${scope}"
+        }
+    }
 }
