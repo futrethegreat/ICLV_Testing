@@ -3,7 +3,11 @@ package Steps;
 import static org.junit.Assert.assertEquals;
 
 import java.math.BigDecimal;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -155,7 +159,7 @@ public class PaymentStep extends BaseUtil {
 	}
 
 	@Then("^Open amount of invoice is decreased by (.+)$")
-	public void thenOpenAmountOfInvoiceIsDecreasedBy(BigDecimal amount) throws InterruptedException {
+	public void thenOpenAmountOfInvoiceIsDecreasedBy(BigDecimal amount) throws InterruptedException, MalformedURLException {
 		ICLVPayablesPage ICLVPayablesPage = new ICLVPayablesPage(base.driver);
 		Thread.sleep(1500); // ESTA ESPERA HAY QUE HACERLO DINAMICO
 
@@ -185,6 +189,9 @@ public class PaymentStep extends BaseUtil {
 		} else {
 			System.out.println("WORKING BAD! X-(");
 		}
+		
+		printURL();
+		
 
 		base.driver.quit();
 	}
@@ -209,5 +216,33 @@ public class PaymentStep extends BaseUtil {
 				"Please enter a numeric payment amount between zero and the invoice exposure",
 				ICLVPayablesPage.getLblErrorAmountTooBig(base.driver));
 //		Utils.consoleMsg("Error message: " + ICLVPayablesPage.getTxtErrorAmountTooBig(base.driver));
+		
+		base.driver.quit();
 	}
+	
+	public void printURL() {
+		try {
+			String sURL = base.driver.getCurrentUrl();
+			URL aURL = new URL(sURL);
+			Map<String, String> map = getQueryMap(aURL.getQuery());
+			String LEID = map.get("leid");
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+	}
+	
+	public static Map<String, String> getQueryMap(String query)  
+	{  
+	    String[] params = query.split("&");  
+	    Map<String, String> map = new HashMap<String, String>();  
+	    for (String param : params)  
+	    {  
+	        String name = param.split("=")[0];  
+	        String value = param.split("=")[1];  
+	        map.put(name, value);  
+	    }  
+	    return map;  
+	}
+	
 }
