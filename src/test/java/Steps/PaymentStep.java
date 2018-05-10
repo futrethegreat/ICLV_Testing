@@ -5,6 +5,10 @@ import static org.junit.Assert.assertEquals;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +16,7 @@ import java.util.Map;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import com.ctc.MariaDB;
 import com.ctc.Utils;
 
 import Base.BaseUtil;
@@ -43,6 +48,7 @@ public class PaymentStep extends BaseUtil {
 	BigDecimal previousAmount;
 	BigDecimal expectedAmount;
 	BigDecimal nextAmount;
+	String documentID;
 
 	private BaseUtil base;
 
@@ -54,6 +60,7 @@ public class PaymentStep extends BaseUtil {
 	public void givenIClickThePayablesTab() {
 
 		ICLVToolMainPage ICLVToolMainPage = new ICLVToolMainPage(base.driver);
+		ICLVToolMainPage.clickLnkDanper(base.driver);
 		ICLVToolMainPage.clickLnkPayables(base.driver);
 		// Utils.waitUntil_isPresent(base.driver, By.linkText("Payables"));
 		// WebElement lnkPayables = base.driver.findElement(By.linkText("Payables"));
@@ -113,13 +120,16 @@ public class PaymentStep extends BaseUtil {
 		// txtAmount.clear();
 		// txtAmount.sendKeys(amount.toString());
 
-		// These lines are just for checking operation and display in console.
+		// These lines are for checking operation and display in console.
 		WebElement InvoicesTable = base.driver.findElement(By.id("ot80"));
 		List<WebElement> tableRows = InvoicesTable.findElements(By.tagName("tr"));
 		List<WebElement> rowCells = tableRows.get(1).findElements(By.tagName("td"));
 		BigDecimal amount2Pay = new BigDecimal(amount.toString());
 		previousAmount = new BigDecimal(rowCells.get(6).getText().replace(",", ""));
 		expectedAmount = previousAmount.subtract(amount2Pay);
+
+		// Get DocumentID for database checking
+		documentID = rowCells.get(0).getText();
 	}
 
 	@And("^I click Execute$")
@@ -145,7 +155,7 @@ public class PaymentStep extends BaseUtil {
 		ICLVPayablesPage.setTxtConfirmCode(base.driver, code);
 		ICLVPayablesPage.setTxtConfirmPassword(base.driver, password);
 	}
-	
+
 	@And("^I click OK$")
 	public void andIClickOK() {
 
@@ -159,7 +169,8 @@ public class PaymentStep extends BaseUtil {
 	}
 
 	@Then("^Open amount of invoice is decreased by (.+)$")
-	public void thenOpenAmountOfInvoiceIsDecreasedBy(BigDecimal amount) throws InterruptedException, MalformedURLException {
+	public void thenOpenAmountOfInvoiceIsDecreasedBy(BigDecimal amount)
+			throws InterruptedException, MalformedURLException {
 		ICLVPayablesPage ICLVPayablesPage = new ICLVPayablesPage(base.driver);
 		Thread.sleep(1500); // ESTA ESPERA HAY QUE HACERLO DINAMICO
 
@@ -182,17 +193,19 @@ public class PaymentStep extends BaseUtil {
 		// nextAmount.toString());
 
 		// These lines are just for checking operation and display in console.
-		Utils.consoleMsg("Previous: " + previousAmount.toString() + " - Expected: " + expectedAmount.toString()
-				+ " - Returned: " + nextAmount.toString());
-		if (expectedAmount.compareTo(nextAmount) == 0) {
-			System.out.println("WORKING GOOD! :-D");
-		} else {
-			System.out.println("WORKING BAD! X-(");
-		}
-		
-		printURL();
-		
+//		Utils.consoleMsg("Previous: " + previousAmount.toString() + " - Expected: " + expectedAmount.toString()
+//				+ " - Returned: " + nextAmount.toString());
+//		if (expectedAmount.compareTo(nextAmount) == 0) {
+//			System.out.println("WORKING GOOD! :-D");
+//		} else {
+//			System.out.println("WORKING BAD! X-(");
+//		}
+	}
 
+	@And("^Amount in database is also updated$")
+	public void AmountInDatabaseIsAlsoUpdated() {
+		System.out.println(expectedAmount.toString() + " - " + getOpenAmountFromDB());
+		assertEquals("Open amount in DB is not correct.", expectedAmount.toString(), getOpenAmountFromDB());
 		base.driver.quit();
 	}
 
@@ -215,34 +228,70 @@ public class PaymentStep extends BaseUtil {
 		assertEquals("Error message not found.",
 				"Please enter a numeric payment amount between zero and the invoice exposure",
 				ICLVPayablesPage.getLblErrorAmountTooBig(base.driver));
-//		Utils.consoleMsg("Error message: " + ICLVPayablesPage.getTxtErrorAmountTooBig(base.driver));
-		
+		// Utils.consoleMsg("Error message: " +
+		// ICLVPayablesPage.getTxtErrorAmountTooBig(base.driver));
+
 		base.driver.quit();
 	}
-	
-	public void printURL() {
+
+	public String getOpenAmountFromDB() {
+		MariaDB javaMySQLBasic = new MariaDB();
+		Connection c;
+		String openAMT = "";
+
+		try {
+			c = javaMySQLBasic.connectDatabase(Utils.dbTestingIP, Utils.dbTestingPort, Utils.dbTestingName,
+					Utils.dbTestingUser, Utils.dbTestingPassword);
+
+			PreparedStatement s = c.prepareStatement(
+					"select r.INSID as DOCUMENTID, d.FKMAPLEGALENTITY as DEBTOR,d.NAME as DEBTORNAME, l.FKMAPLEGALENTITY as LENDER,  l.NAME as LENDERNAME,r.ORGAMT as TOTALAMOUNT,r.ORGAMT-r.PAYAMT as OPEN \n"
+							+ "from ctbadmin.receivable r "
+							+ "inner join ctbadmin.legalentity d on d.LEGALENTITYID=r.FKDEBTOR "
+							+ "inner join ctbadmin.lender l on l.LEGALENTITYID=r.FKLENDER "
+							+ "where d.FKMAPLEGALENTITY=? and r.INSID=?;");
+			s.setString(1, getLEID());
+			s.setString(2, documentID);
+			ResultSet rs = s.executeQuery();
+
+			if (rs.next()) {
+				openAMT = rs.getString("OPEN");
+			}
+
+			c.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("ERROR: Closing application. Check database connection data and credentials.");
+
+		} catch (Exception e) {
+			System.out.println("ERROR: Exception not handled: ");
+			e.printStackTrace();
+		}
+		return openAMT;
+	}
+
+	public String getLEID() {
+		String LEID = "";
 		try {
 			String sURL = base.driver.getCurrentUrl();
 			URL aURL = new URL(sURL);
 			Map<String, String> map = getQueryMap(aURL.getQuery());
-			String LEID = map.get("leid");
+			LEID = map.get("leid");
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}		
+		}
+		return LEID;
 	}
-	
-	public static Map<String, String> getQueryMap(String query)  
-	{  
-	    String[] params = query.split("&");  
-	    Map<String, String> map = new HashMap<String, String>();  
-	    for (String param : params)  
-	    {  
-	        String name = param.split("=")[0];  
-	        String value = param.split("=")[1];  
-	        map.put(name, value);  
-	    }  
-	    return map;  
+
+	public static Map<String, String> getQueryMap(String query) {
+		String[] params = query.split("&");
+		Map<String, String> map = new HashMap<String, String>();
+		for (String param : params) {
+			String name = param.split("=")[0];
+			String value = param.split("=")[1];
+			map.put(name, value);
+		}
+		return map;
 	}
-	
+
 }

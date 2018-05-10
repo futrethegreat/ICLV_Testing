@@ -18,10 +18,10 @@ public class Utils {
 	private final static String FirefoxDriverFileWindows = "src\\resources\\geckodriver.exe";
 	private final static String FirefoxDriverType = "webdriver.gecko.driver";
 
-	public static final String dbTestingDriver = org.h2.Driver.class.getName();
-	public static final String dbTestingURL = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1";
-	public static final String dbTestingUser = "sa";
-	public static final String dbTestingPassword = "";
+	public static final String dbMemoryDriver = org.h2.Driver.class.getName();
+	public static final String dbMemoryURL = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1";
+	public static final String dbMemoryUser = "sa";
+	public static final String dbMemoryPassword = "";
 	public final static String BROWSER = "FFH"; // Options might be CH FF IE SF OP. H means Headless
 	public final static String OperatingSystem = System.getProperty("os.name").toLowerCase();
 
@@ -31,12 +31,20 @@ public class Utils {
 	public static String dbUser = "jenkins";
 	public static String dbPassword = "jenkins";
 	public static String dbDriverName = MariaDB.JDBC_DRIVER;
-	public static String dbMemoryDriver = "org.hsqldb.jdbc.JDBCDriver";
+//	public static String dbMemoryDriver = "org.hsqldb.jdbc.JDBCDriver";
 	public static String dbUrl;
 	public static String DriverFile;
 	public static String DriverType;
 	public static String path2XML;
 	public static String dbTestingSchema;
+	
+	public static String dbTestingIP = "192.168.115.135";
+	public static String dbTestingPort	= "3306";
+	public static String dbTestingName = "ctbadmin";
+	public static String dbTestingUser = "promise";
+	public static String dbTestingPassword = "hasdlU8sdf3Ajdsafl";
+	public static String dbTestingDriverName = MariaDB.JDBC_DRIVER;
+	
 
 	@SuppressWarnings("unused")
 	public static void setEnvironment() {

@@ -17,6 +17,7 @@ Feature: ICLVPayment
     And I enter "Welcome1" as password and the code provided
     And I click OK
     Then Open amount of invoice is decreased by 1.1 
+    #And Amount in database is also updated
 
     Examples: 
       | UserName   | Password |

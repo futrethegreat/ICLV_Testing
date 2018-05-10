@@ -70,8 +70,8 @@ public class LoginStep extends BaseUtil {
 	public void thenIShouldSeeTheToolMainPage() throws Exception {
 		try {
 			ICLVToolMainPage ICLVToolMainPage = new ICLVToolMainPage(base.driver);
-			assertEquals("Invoices link not found. Tool main page not reached", "Invoices",
-					ICLVToolMainPage.getLnkInvoicesText());
+			assertEquals("Sign out link not found. Tool main page not reached", "signout of TREFI",
+					ICLVToolMainPage.getLnkSignOutText());
 		} catch (TimeoutException e) {
 			// Si esta aqui es que falla la creacion de la pagina de The Tool
 			Utils.consoleMsg("No Tool main page");
