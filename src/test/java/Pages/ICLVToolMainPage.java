@@ -5,6 +5,7 @@ import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.PageFactory;
 
 import com.ctc.Utils;
@@ -12,26 +13,30 @@ import com.ctc.Utils;
 public class ICLVToolMainPage {
 	@FindBy(xpath = "//*[@title=\"signout of TREFI\"]")
 	public WebElement lnkSignOut;
-	/*
-	 * FW6 OBJECTS
-	@FindBy(linkText = "Invoices")
-	public WebElement lnkInvoices;
-	@FindBy(linkText = "Payables")
-	public WebElement lnkPayables;
-	@FindBy(linkText = "Finance")
-	public WebElement lnkFinance;
-	@FindBy(linkText = "Account")
-	public WebElement lnkAccount;
-	@FindBy(linkText = "Personal")
-	public WebElement lnkPersonal;
-	*/
-	
-	@FindBy(xpath = "//*[@id=\"tooltree\"]/div/div/div/div[3]")
+	@FindBy(xpath = "//*[@title='HK1296102']")
 	public WebElement lnkCTC;
-	@FindBy(xpath = "//*[@id=\"tooltree\"]/div/div/div/div[7]")
-	public WebElement lnkDanper;
-	@FindBy(xpath = "//*[@id=\"c208\"]/div/a")
-	public WebElement lnkPayables;
+	@FindBy(xpath = "//*[@title='PE20170040938']")
+	public WebElement lnkDANPER;
+	@FindBy(xpath = "//*[@title='PE20523625633']")
+	public WebElement lnkCTCLATAM;
+	
+	@FindBys(
+        {
+	        @FindBy(id="tPE20170040938_65"),
+	        @FindBy(xpath="//*[@id=\"c208\"]/div/a")
+//	        @FindBy(linkText="Payables")
+        }
+	)
+	public WebElement lnkToPayDANPER;
+
+	@FindBys(
+        {
+            @FindBy(xpath="//*[@id=\"tPE20523625633_65\"]"),
+            @FindBy(xpath="//*[@id=\"tPE20523625633_65\"]/tbody/tr[2]/td[3]/div/a")
+//            @FindBy(linkText="Invoices")
+        }
+	)
+	public WebElement lnkToReceiveCTCLATAM;
 	
 	public ICLVToolMainPage(WebDriver driver) throws TimeoutException {
 		Utils.waitUntil_isPresent(driver, By.xpath("//*[@title=\"signout of TREFI\"]"));
@@ -43,50 +48,34 @@ public class ICLVToolMainPage {
 	}
 
 	public String getLnkDanperText() {
-		return this.lnkDanper.getAttribute("title").toString();
+		return this.lnkDANPER.getAttribute("title").toString();
 	}
-
-	/* FW6
-	public String getLnkInvoicesText() {
-		return this.lnkInvoices.getText().toString();
-	}
-	*/
 
 	public void clickLnkSignOut() {
 		this.lnkSignOut.click();
 	}
 
-	public void clickLnkDanper(WebDriver driver) {
-		
-//		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", lnkDanper);
-//		
-//		Actions actions = new Actions(driver);
-//		actions.moveToElement(lnkDanper);
-//		actions.perform();
-		
-		try {
-			lnkDanper.click();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			lnkCTC.click();
-			lnkDanper.click();
-		}
+	public void clickLnkCTC() throws InterruptedException {
+		lnkCTC.click();
+		Thread.sleep(1000);
 	}
 
-	public void clickLnkPayables(WebDriver driver) {
-//		//Utils.waitUntil_isClickable(driver, lnkPayables);
-//		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", lnkPayables);
-//
-//		Actions actions = new Actions(driver);
-//		actions.moveToElement(lnkPayables);
-//		actions.perform();
+	public void clickLnkDANPER() throws InterruptedException {
+		lnkDANPER.click();
+		Thread.sleep(1000);
+	}
 
-		try {
-			lnkPayables.click();
-		} catch (Exception e) {
-			clickLnkDanper(driver);
-			lnkPayables.click();
-		}
+	public void clickLnkCTCLATAM() throws InterruptedException {
+		lnkCTCLATAM.click();
+		Thread.sleep(1000);
+	}
+
+	public void clickLnkPayablesDANPER() {
+		lnkToPayDANPER.click();
+	}
+
+	public void clickLnkInvoicesCTCLATAM() {
+		lnkToReceiveCTCLATAM.click();
 	}
 
 }

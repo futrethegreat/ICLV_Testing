@@ -9,40 +9,147 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.PageFactory;
 
 import com.ctc.Utils;
 	
 	public class ICLVPayablesPage {
-		@FindBy(id = "ot80")
+
+		@FindBys(
+			{
+				@FindBy(xpath="//*[@id=\"208|65|PE20170040938\"]/div"),
+				@FindBy(id="ot80")
+			}
+		)
+//		@FindBy(id = "ot80")
 		public WebElement tblInvoices;
-// FW6		@FindBy(xpath = "//*[@id=\"selectedActTypeid_chosen\"]/a/div/b")
-		@FindBy(xpath = "//*[@id=\"selectedActTypeid_chosen\"]")
+
+		@FindBys(
+			{
+				@FindBy(xpath="//*[@id=\"208|65|PE20170040938\"]/div"),
+				@FindBy(xpath="//*[@id=\"selectedActTypeid_chosen\"]")
+			}
+		)
+//		@FindBy(xpath = "//*[@id=\"selectedActTypeid_chosen\"]")
 		public WebElement lstOption;
-		@FindBy(xpath = "//*[@id=\"selectedActTypeid_chosen\"]/div/ul/li[1]")
+
+		@FindBys(
+			{
+				@FindBy(xpath="//*[@id=\"208|65|PE20170040938\"]/div"),
+				@FindBy(xpath="//*[@id=\"selectedActTypeid_chosen\"]/div/ul/li[1]")
+			}
+		)
+//		@FindBy(xpath = "//*[@id=\"selectedActTypeid_chosen\"]/div/ul/li[1]")
 		public WebElement lstOptionPayInvoice;
-		@FindBy(xpath = "//*[@id=\"selectedActTypeid_chosen\"]/div/ul/li[2]")
+		
+		@FindBys(
+			{
+				@FindBy(xpath="//*[@id=\"208|65|PE20170040938\"]/div"),
+				@FindBy(xpath="//*[@id=\"selectedActTypeid_chosen\"]/div/ul/li[2]")
+			}
+		)
+//		@FindBy(xpath = "//*[@id=\"selectedActTypeid_chosen\"]/div/ul/li[2]")
 		public WebElement lstOptionApproveInvoice;
-		@FindBy(xpath = "//*[@id=\"selectedActTypeid_chosen\"]/div/ul/li[3]")
+
+		@FindBys(
+			{
+				@FindBy(xpath="//*[@id=\"208|65|PE20170040938\"]/div"),
+				@FindBy(xpath="//*[@id=\"selectedActTypeid_chosen\"]/div/ul/li[3]")
+			}
+		)
+//		@FindBy(xpath = "//*[@id=\"selectedActTypeid_chosen\"]/div/ul/li[3]")
 		public WebElement lstOptionDisputeInvoice;
-		@FindBy(id = "PAYAMT")
+
+		@FindBys(
+			{
+				@FindBy(xpath="//*[@id=\"208|65|PE20170040938\"]/div"),
+				@FindBy(id = "PAYAMT")
+			}
+		)
+//		@FindBy(id = "PAYAMT")
 		public WebElement txtAmount;
-		@FindBy(id = "execute1")
+
+		@FindBys(
+			{
+				@FindBy(xpath="//*[@id=\"208|65|PE20170040938\"]/div"),
+				@FindBy(id = "execute1")
+			}
+		)
+//		@FindBy(id = "execute1")
 		public WebElement btnExecute;
-		@FindBy(id = "confirmok")
+
+		@FindBys(
+			{
+				@FindBy(xpath="//*[@id=\"208|65|PE20170040938\"]/div"),
+				@FindBy(id = "confirmok")
+			}
+		)
+//		@FindBy(id = "confirmok")
 		public WebElement btnConfirmOK;
-		@FindBy(id = "refreshicon")
+
+		@FindBys(
+			{
+				@FindBy(xpath="//*[@id=\"208|65|PE20170040938\"]/div"),
+				@FindBy(id = "refreshicon")
+			}
+		)
+//		@FindBy(id = "refreshicon")
 		public WebElement btnRefresh;
-		@FindBy(xpath = "//*[@id=\"asform\"]/div/div[3]")
+
+		@FindBys(
+			{
+				@FindBy(xpath="//*[@id=\"208|65|PE20170040938\"]/div"),
+				@FindBy(xpath = "//*[@id=\"asform\"]/div/div[3]")
+			}
+		)
+//		@FindBy(xpath = "//*[@id=\"asform\"]/div/div[3]")
 		public WebElement lblError;
-		@FindBy(id = "confirmmsg")
+
+		@FindBys(
+			{
+				@FindBy(xpath="//*[@id=\"208|65|PE20170040938\"]/div"),
+				@FindBy(id = "confirmmsg")
+			}
+		)
+//		@FindBy(id = "confirmmsg")
 		public WebElement lblConfirmMsg;
-		@FindBy(id = "confirmcode")
+
+		@FindBys(
+			{
+				@FindBy(xpath="//*[@id=\"208|65|PE20170040938\"]/div"),
+				@FindBy(id = "confirmcode")
+			}
+		)
+//		@FindBy(id = "confirmcode")
 		public WebElement txtConfirmCode;
-		@FindBy(id = "confirmpassword")
+
+		@FindBys(
+			{
+				@FindBy(xpath="//*[@id=\"208|65|PE20170040938\"]/div"),
+				@FindBy(id = "confirmpassword")
+			}
+		)
+//		@FindBy(id = "confirmpassword")
 		public WebElement txtConfirmPassword;
-		@FindBy(id = "note")
+
+		@FindBys(
+			{
+				@FindBy(xpath="//*[@id=\"208|65|PE20170040938\"]/div"),
+				@FindBy(id = "note")
+			}
+		)
+//		@FindBy(id = "note")
 		public WebElement txtNoteBox;
+
+		@FindBys(
+			{
+				@FindBy(xpath="//*[@id=\"208|65|PE20170040938\"]/div"),
+				@FindBy(id = "disputeamount")
+			}
+		)
+//		@FindBy(id = "disputeamount")
+		public WebElement txtDisputeAmount;
 		
 		public ICLVPayablesPage(WebDriver driver) throws TimeoutException {
 			
@@ -61,7 +168,9 @@ import com.ctc.Utils;
 			rowCells.get(1).click();
 		}
 
-		public String clickTblInvoices1stRowNotDisputed(WebDriver driver) {
+		public String clickTblInvoices1stRowNotDisputed(WebDriver driver, String supplier) {
+			String supplierInTable = "";
+			
 			// Table rows
 			List<WebElement> tableRows = tblInvoices.findElements(By.tagName("tr"));
 			// Row#1 columns
@@ -72,9 +181,19 @@ import com.ctc.Utils;
 			for (int i=1;i<tableRows.size();i++) {
 				rowCells = tableRows.get(i).findElements(By.tagName("td"));
 //				Utils.consoleMsg(rowCells.get(0).getText() + " - " + rowCells.get(11).getText());
+				
+				supplierInTable=(rowCells.get(2).getText().trim().length()==0) ? supplierInTable : rowCells.get(2).getText().trim();
+				
 				if (rowCells.get(11).getText().equals("Dispute") == false) {
-					rowCells.get(0).click();
-					break;
+					if (supplier.trim().length() == 0) { 
+						rowCells.get(0).click();
+						break;
+//					} else if (rowCells.get(2).getText().equals(supplier)) {
+					} else if (supplierInTable.equals(supplier)) {
+//						Utils.consoleMsg("My supplier: " + supplierInTable);
+						rowCells.get(0).click();
+						break;
+					}
 				}
 			}
 			return rowCells.get(0).getText();
@@ -87,6 +206,30 @@ import com.ctc.Utils;
 			List<WebElement> rowCells = tableRows.get(1).findElements(By.tagName("td"));
 			// Click on first data row
 			Utils.waitUntil_isClickable(driver, rowCells.get(1));
+			return rowCells.get(6).getText().replace(",", "");
+		}
+
+		public String getTblInvoicesRowAmount(WebDriver driver, String documentID) {
+			// Table rows
+			List<WebElement> tableRows = tblInvoices.findElements(By.tagName("tr"));
+			// Row#1 columns
+			List<WebElement> rowCells = tableRows.get(1).findElements(By.tagName("td"));
+			// Click on first data row
+			Utils.waitUntil_isClickable(driver, rowCells.get(1));
+
+			for (int i=1;i<tableRows.size();i++) {
+				rowCells = tableRows.get(i).findElements(By.tagName("td"));
+//				Utils.consoleMsg(rowCells.get(0).getText() + " - " + rowCells.get(11).getText());
+				if (rowCells.get(11).getText().equals("Dispute") == false) {
+					if (documentID.trim().length() == 0) { 
+						rowCells.get(0).click();
+						break;
+					} else if (rowCells.get(0).getText().equals(documentID)) {
+						rowCells.get(0).click();
+						break;
+					}
+				}
+			}
 			return rowCells.get(6).getText().replace(",", "");
 		}
 
@@ -143,6 +286,11 @@ import com.ctc.Utils;
 			txtNoteBox.clear();
 			txtNoteBox.sendKeys(s);
 		}
+		public void setTxtDisputeAmount(WebDriver driver, String s) {
+			Utils.waitUntil_isClickable(driver, txtDisputeAmount);
+			txtDisputeAmount.clear();
+			txtDisputeAmount.sendKeys(s);
+		}
 		
 		public void clickBtnExecute(WebDriver driver) {
 			Utils.waitUntil_isClickable(driver, btnExecute);
@@ -159,13 +307,13 @@ import com.ctc.Utils;
 			btnRefresh.click();
 		}
 		
-		public String getLblErrorAmountTooBig(WebDriver driver) {
+		public String getLblErrorAmount(WebDriver driver) {
 			//Returns Please enter a numeric payment amount between zero and the invoice exposure
 			Utils.waitUntil_isClickable(driver, lblError);
 			String msg = Utils.normalizeString(lblError.getText().trim());
-			int i = msg.indexOf("exposure", 0);
+//			int i = msg.indexOf("exposure", 0);
 //			Utils.consoleMsg("Mensaje error y posicion de texto: " + i + msg);
-			msg = msg.substring(0, i+"exposure".length());
+//			msg = msg.substring(0, i+"exposure".length());
 			return msg;
 		}
 
@@ -182,7 +330,7 @@ import com.ctc.Utils;
 			String msg = Utils.normalizeString(lblConfirmMsg.getText().trim());
 			int i = msg.indexOf("code is", 0);
 			msg = msg.substring(i+8, i+16); //i+8 = "is ". i+16 = "code is " + 8 digits of code
-//			Utils.consoleMsg(7"Code is: " + msg);
+//			Utils.consoleMsg("Code is: " + msg);
 			return msg;
 		}
 		

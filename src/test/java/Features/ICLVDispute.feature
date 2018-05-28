@@ -10,15 +10,18 @@ Feature: ICLVDispute
     And I click Login button
     Then I should see the Tool main page
     Given I click the Payables tab
-    When I click first invoice to dispute
+    When I click first invoice to dispute of "CAPITAL TOOL COMPANY."
     And I click the Dispute invoice implementation
+    And I enter full pending amount
     And I enter a description "I do not agree with this invoice at all"
     And I click Execute
     And I enter "Welcome1" as password and the code provided
     And I click OK
     Then Status dispute of invoice is set to Yes
-    #Then a task is create for my supplier to resolve the dispute 
-
+    Given I click supplier Invoices tab
+    When I click on debtor "DANPER TRUJILLO S.A.C."
+    Then a task is created to resolve the invoice disputed 
+    
     Examples: 
       | UserName   | Password |
       | davidsauce | Welcome1 |
@@ -31,8 +34,9 @@ Feature: ICLVDispute
     And I click Login button
     Then I should see the Tool main page
     Given I click the Payables tab
-    When I click first invoice to dispute
+    When I click first invoice to dispute of "CAPITAL TOOL COMPANY."
     And I click the Dispute invoice implementation
+    And I enter full pending amount
     And I enter a description "Incorrect"
     And I click Execute
     Then the system should say it is too short
@@ -41,6 +45,4 @@ Feature: ICLVDispute
       | UserName   | Password |
       | davidsauce | Welcome1 |
       
-  #Scenario Outline: Make a dispute on an invoice for 1000 PEN. Should be successful.
-  #note that the amount field is missing at the moment
   

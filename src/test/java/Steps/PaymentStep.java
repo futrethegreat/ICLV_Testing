@@ -32,14 +32,7 @@ import cucumber.api.java.en.When;
  * 
  *         Implements ICLVPayment.feature steps:
  * 
- *         Scenario Outline: Login with correct credentials and sign out
- *         afterwards. Given I navigate to the ICLV home page When I click on
- *         Sign In link Then I should see the Login Page When I enter <UserName>
- *         and <Password> And I click Login button Then I should see the Tool
- *         main page Given I click the Payables tab When I click first invoice
- *         to pay And I click the Pay invoice implementation And I enter the
- *         amount 1.1 And I click Execute Then Open amount of invoice is
- *         decreased by 1.1
+ * 
  *
  */
 public class PaymentStep extends BaseUtil {
@@ -57,11 +50,12 @@ public class PaymentStep extends BaseUtil {
 	}
 
 	@Given("^I click the Payables tab$")
-	public void givenIClickThePayablesTab() {
+	public void givenIClickThePayablesTab() throws InterruptedException {
 
 		ICLVToolMainPage ICLVToolMainPage = new ICLVToolMainPage(base.driver);
-		ICLVToolMainPage.clickLnkDanper(base.driver);
-		ICLVToolMainPage.clickLnkPayables(base.driver);
+		ICLVToolMainPage.clickLnkCTC();
+		ICLVToolMainPage.clickLnkDANPER();
+		ICLVToolMainPage.clickLnkPayablesDANPER();
 		// Utils.waitUntil_isPresent(base.driver, By.linkText("Payables"));
 		// WebElement lnkPayables = base.driver.findElement(By.linkText("Payables"));
 		// lnkPayables.click();
@@ -193,13 +187,14 @@ public class PaymentStep extends BaseUtil {
 		// nextAmount.toString());
 
 		// These lines are just for checking operation and display in console.
-//		Utils.consoleMsg("Previous: " + previousAmount.toString() + " - Expected: " + expectedAmount.toString()
-//				+ " - Returned: " + nextAmount.toString());
-//		if (expectedAmount.compareTo(nextAmount) == 0) {
-//			System.out.println("WORKING GOOD! :-D");
-//		} else {
-//			System.out.println("WORKING BAD! X-(");
-//		}
+		// Utils.consoleMsg("Previous: " + previousAmount.toString() + " - Expected: " +
+		// expectedAmount.toString()
+		// + " - Returned: " + nextAmount.toString());
+		// if (expectedAmount.compareTo(nextAmount) == 0) {
+		// System.out.println("WORKING GOOD! :-D");
+		// } else {
+		// System.out.println("WORKING BAD! X-(");
+		// }
 	}
 
 	@And("^Amount in database is also updated$")
@@ -226,8 +221,8 @@ public class PaymentStep extends BaseUtil {
 	public void thenTheSystemShouldSayItIsNotPossible() throws Exception {
 		ICLVPayablesPage ICLVPayablesPage = new ICLVPayablesPage(base.driver);
 		assertEquals("Error message not found.",
-				"Please enter a numeric payment amount between zero and the invoice exposure",
-				ICLVPayablesPage.getLblErrorAmountTooBig(base.driver));
+				"Please enter an amount between 0 and the exposure on the invoice",
+				ICLVPayablesPage.getLblErrorAmount(base.driver));
 		// Utils.consoleMsg("Error message: " +
 		// ICLVPayablesPage.getTxtErrorAmountTooBig(base.driver));
 
