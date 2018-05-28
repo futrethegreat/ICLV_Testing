@@ -18,7 +18,7 @@ import com.ctc.Utils;
 
 		@FindBys(
 			{
-				@FindBy(xpath="//*[@id=\"208|65|PE20170040938\"]/div"),
+				@FindBy(xpath=".//*[@id=\"208|65|PE20170040938\"]/div"),
 				@FindBy(id="ot80")
 			}
 		)
@@ -27,8 +27,8 @@ import com.ctc.Utils;
 
 		@FindBys(
 			{
-				@FindBy(xpath="//*[@id=\"208|65|PE20170040938\"]/div"),
-				@FindBy(xpath="//*[@id=\"selectedActTypeid_chosen\"]")
+				@FindBy(xpath=".//*[@id=\"208|65|PE20170040938\"]/div"),
+				@FindBy(xpath=".//*[@id=\"selectedActTypeid_chosen\"]")
 			}
 		)
 //		@FindBy(xpath = "//*[@id=\"selectedActTypeid_chosen\"]")
@@ -36,8 +36,8 @@ import com.ctc.Utils;
 
 		@FindBys(
 			{
-				@FindBy(xpath="//*[@id=\"208|65|PE20170040938\"]/div"),
-				@FindBy(xpath="//*[@id=\"selectedActTypeid_chosen\"]/div/ul/li[1]")
+				@FindBy(xpath=".//*[@id=\"208|65|PE20170040938\"]/div"),
+				@FindBy(xpath=".//*[@id=\"selectedActTypeid_chosen\"]/div/ul/li[1]")
 			}
 		)
 //		@FindBy(xpath = "//*[@id=\"selectedActTypeid_chosen\"]/div/ul/li[1]")
@@ -45,8 +45,8 @@ import com.ctc.Utils;
 		
 		@FindBys(
 			{
-				@FindBy(xpath="//*[@id=\"208|65|PE20170040938\"]/div"),
-				@FindBy(xpath="//*[@id=\"selectedActTypeid_chosen\"]/div/ul/li[2]")
+				@FindBy(xpath=".//*[@id=\"208|65|PE20170040938\"]/div"),
+				@FindBy(xpath=".//*[@id=\"selectedActTypeid_chosen\"]/div/ul/li[2]")
 			}
 		)
 //		@FindBy(xpath = "//*[@id=\"selectedActTypeid_chosen\"]/div/ul/li[2]")
@@ -54,8 +54,8 @@ import com.ctc.Utils;
 
 		@FindBys(
 			{
-				@FindBy(xpath="//*[@id=\"208|65|PE20170040938\"]/div"),
-				@FindBy(xpath="//*[@id=\"selectedActTypeid_chosen\"]/div/ul/li[3]")
+				@FindBy(xpath=".//*[@id=\"208|65|PE20170040938\"]/div"),
+				@FindBy(xpath=".//*[@id=\"selectedActTypeid_chosen\"]/div/ul/li[3]")
 			}
 		)
 //		@FindBy(xpath = "//*[@id=\"selectedActTypeid_chosen\"]/div/ul/li[3]")
@@ -63,7 +63,7 @@ import com.ctc.Utils;
 
 		@FindBys(
 			{
-				@FindBy(xpath="//*[@id=\"208|65|PE20170040938\"]/div"),
+				@FindBy(xpath=".//*[@id=\"208|65|PE20170040938\"]/div"),
 				@FindBy(id = "PAYAMT")
 			}
 		)
@@ -72,7 +72,7 @@ import com.ctc.Utils;
 
 		@FindBys(
 			{
-				@FindBy(xpath="//*[@id=\"208|65|PE20170040938\"]/div"),
+				@FindBy(xpath=".//*[@id=\"208|65|PE20170040938\"]/div"),
 				@FindBy(id = "execute1")
 			}
 		)
@@ -81,7 +81,7 @@ import com.ctc.Utils;
 
 		@FindBys(
 			{
-				@FindBy(xpath="//*[@id=\"208|65|PE20170040938\"]/div"),
+				@FindBy(xpath=".//*[@id=\"208|65|PE20170040938\"]/div"),
 				@FindBy(id = "confirmok")
 			}
 		)
@@ -90,7 +90,7 @@ import com.ctc.Utils;
 
 		@FindBys(
 			{
-				@FindBy(xpath="//*[@id=\"208|65|PE20170040938\"]/div"),
+				@FindBy(xpath=".//*[@id=\"208|65|PE20170040938\"]/div"),
 				@FindBy(id = "refreshicon")
 			}
 		)
@@ -99,8 +99,8 @@ import com.ctc.Utils;
 
 		@FindBys(
 			{
-				@FindBy(xpath="//*[@id=\"208|65|PE20170040938\"]/div"),
-				@FindBy(xpath = "//*[@id=\"asform\"]/div/div[3]")
+				@FindBy(xpath=".//*[@id=\"208|65|PE20170040938\"]/div"),
+				@FindBy(xpath = ".//*[@id=\"asform\"]/div/div[3]")
 			}
 		)
 //		@FindBy(xpath = "//*[@id=\"asform\"]/div/div[3]")
@@ -108,7 +108,7 @@ import com.ctc.Utils;
 
 		@FindBys(
 			{
-				@FindBy(xpath="//*[@id=\"208|65|PE20170040938\"]/div"),
+				@FindBy(xpath=".//*[@id=\"208|65|PE20170040938\"]/div"),
 				@FindBy(id = "confirmmsg")
 			}
 		)
@@ -117,7 +117,7 @@ import com.ctc.Utils;
 
 		@FindBys(
 			{
-				@FindBy(xpath="//*[@id=\"208|65|PE20170040938\"]/div"),
+				@FindBy(xpath=".//*[@id=\"208|65|PE20170040938\"]/div"),
 				@FindBy(id = "confirmcode")
 			}
 		)
@@ -126,7 +126,7 @@ import com.ctc.Utils;
 
 		@FindBys(
 			{
-				@FindBy(xpath="//*[@id=\"208|65|PE20170040938\"]/div"),
+				@FindBy(xpath=".//*[@id=\"208|65|PE20170040938\"]/div"),
 				@FindBy(id = "confirmpassword")
 			}
 		)
@@ -135,7 +135,7 @@ import com.ctc.Utils;
 
 		@FindBys(
 			{
-				@FindBy(xpath="//*[@id=\"208|65|PE20170040938\"]/div"),
+				@FindBy(xpath=".//*[@id=\"208|65|PE20170040938\"]/div"),
 				@FindBy(id = "note")
 			}
 		)
@@ -144,7 +144,7 @@ import com.ctc.Utils;
 
 		@FindBys(
 			{
-				@FindBy(xpath="//*[@id=\"208|65|PE20170040938\"]/div"),
+				@FindBy(xpath=".//*[@id=\"208|65|PE20170040938\"]/div"),
 				@FindBy(id = "disputeamount")
 			}
 		)
@@ -184,7 +184,7 @@ import com.ctc.Utils;
 				
 				supplierInTable=(rowCells.get(2).getText().trim().length()==0) ? supplierInTable : rowCells.get(2).getText().trim();
 				
-				if (rowCells.get(11).getText().equals("Dispute") == false) {
+				if ((rowCells.get(11).getText().equals("Dispute") == false) && (rowCells.get(11).getText().equals("Solved") == false)) {
 					if (supplier.trim().length() == 0) { 
 						rowCells.get(0).click();
 						break;
@@ -220,7 +220,7 @@ import com.ctc.Utils;
 			for (int i=1;i<tableRows.size();i++) {
 				rowCells = tableRows.get(i).findElements(By.tagName("td"));
 //				Utils.consoleMsg(rowCells.get(0).getText() + " - " + rowCells.get(11).getText());
-				if (rowCells.get(11).getText().equals("Dispute") == false) {
+				if ((rowCells.get(11).getText().equals("Dispute") == false) && (rowCells.get(11).getText().equals("Solved") == false)) {
 					if (documentID.trim().length() == 0) { 
 						rowCells.get(0).click();
 						break;
@@ -248,10 +248,9 @@ import com.ctc.Utils;
 					break;
 				}
 			}
-			
-			return rowCells.get(11).getText();
+			return rowCells.get(11).getText().trim();
 		}
-		
+
 		public void clickLstOption() {
 			lstOption.click();
 		}

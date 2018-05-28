@@ -70,12 +70,14 @@ public class ICLVToolMainPage {
 		Thread.sleep(1000);
 	}
 
-	public void clickLnkPayablesDANPER() {
+	public void clickLnkPayablesDANPER() throws InterruptedException{
 		lnkToPayDANPER.click();
+		Thread.sleep(1000);
 	}
 
-	public void clickLnkInvoicesCTCLATAM() {
+	public void clickLnkInvoicesCTCLATAM() throws InterruptedException{
 		lnkToReceiveCTCLATAM.click();
+		Thread.sleep(1000);
 	}
 
 }

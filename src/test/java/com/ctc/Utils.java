@@ -22,7 +22,7 @@ public class Utils {
 	public static final String dbMemoryURL = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1";
 	public static final String dbMemoryUser = "sa";
 	public static final String dbMemoryPassword = "";
-	public final static String BROWSER = "FFH"; // Options might be CH FF IE SF OP. H means Headless
+	public final static String BROWSER = "CH"; // Options might be CH FF IE SF OP. H means Headless
 	public final static String OperatingSystem = System.getProperty("os.name").toLowerCase();
 
 	public static String dbIP;

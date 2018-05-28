@@ -1,6 +1,7 @@
 package Steps;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import Base.BaseUtil;
@@ -12,12 +13,13 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
-
 public class DisputeStep extends BaseUtil {
 
 	String parentHandle;
 	String documentID;
-
+	String debtorID;
+	boolean resolved;
+	
 	private BaseUtil base;
 
 	public DisputeStep(BaseUtil base) {
@@ -69,7 +71,7 @@ public class DisputeStep extends BaseUtil {
 	@Given("^I click supplier Invoices tab$")
 	public void givenIClickSupplierInvoicesTab() throws InterruptedException {
 		ICLVToolMainPage ICLVToolMainPage = new ICLVToolMainPage(base.driver);
-		ICLVToolMainPage.clickLnkDANPER();
+		ICLVToolMainPage.clickLnkCTC();
 		ICLVToolMainPage.clickLnkCTCLATAM();
 		ICLVToolMainPage.clickLnkInvoicesCTCLATAM();
 	}
@@ -77,6 +79,7 @@ public class DisputeStep extends BaseUtil {
 	@When("^I click on debtor \"([^\"]*)\"$")
 	public void whenIClickOnDebtor(String debtor) throws InterruptedException {
 		ICLVInvoicesPage ICLVInvoicesPage = new ICLVInvoicesPage(base.driver);
+		debtorID = debtor;
 		ICLVInvoicesPage.clickTblDebtorsRow(base.driver, debtor);
 	}
 
@@ -98,5 +101,57 @@ public class DisputeStep extends BaseUtil {
 
 		base.driver.quit();
 	}
+	
+	@And("^select a disputed invoice$")
+	public void andSelectADisputedInvoice() throws Exception {
+		ICLVInvoicesPage ICLVInvoicesPage = new ICLVInvoicesPage(base.driver);
+		documentID = ICLVInvoicesPage.clickInvoiceDisputed(base.driver);
+		ICLVInvoicesPage.clickBtnResolveQuery(base.driver);
+	}
 
+	@And("^resolve the dispute with a note$")
+	public void andResolveTheDisputeWithANote() throws Exception {
+		ICLVInvoicesPage ICLVInvoicesPage = new ICLVInvoicesPage(base.driver);
+		documentID = ICLVInvoicesPage.clickInvoiceDisputed(base.driver);
+		ICLVInvoicesPage.setTxtNoteBox(base.driver, "This invoice is correct");
+		ICLVInvoicesPage.clickBtnExecute(base.driver);
+		
+		ICLVInvoicesPage.clickTblDebtorsRow(base.driver, debtorID);
+		
+		assertFalse("Invoice disputed.",
+				ICLVInvoicesPage.checkTblInvoicesDisputed(base.driver,documentID));
+	}
+	
+	@Then("^the invoice is no longer disputed$")
+	public void thenTheInvoiceIsNoLongerDisputed() throws Exception {
+		ICLVInvoicesPage ICLVInvoicesPage = new ICLVInvoicesPage(base.driver);
+//		Utils.consoleMsg("Debtor: " + debtorID + " documentID: " + documentID);
+		ICLVInvoicesPage.clickTblDebtorsRow(base.driver, debtorID);
+		assertFalse("Invoice disputed.",
+				ICLVInvoicesPage.checkTblInvoicesDisputed(base.driver,documentID));
+	}
+	
+	@Given("^I click To Pay for supplier$")
+	public void givenIClickToPayForSupplier() throws InterruptedException {
+		ICLVToolMainPage ICLVToolMainPage = new ICLVToolMainPage(base.driver);
+		ICLVToolMainPage.clickLnkCTCLATAM();
+		ICLVToolMainPage.clickLnkDANPER();
+		ICLVToolMainPage.clickLnkPayablesDANPER();
+	}
+
+	
+	@When("^I click invoice resolved$")
+	public void whenIClickInvoiceResolved() {
+//		debtorID = "DANPER TRUJILLO S.A.C.";
+//		documentID = "F001-00000008";
+//		
+		ICLVPayablesPage ICLVPayablesPage = new ICLVPayablesPage(base.driver);
+//		Utils.consoleMsg("???= " + ICLVPayablesPage.getTblInvoices1stRowDispute(base.driver, documentID));
+		resolved = ICLVPayablesPage.getTblInvoices1stRowDispute(base.driver, documentID).equals("Solved");
+	}
+
+	@Then("^it is pending to be approved$")
+	public void thenItIsPendingToBeApproved() throws Exception {
+		assertTrue("Invoice not Solved.",resolved);
+	}
 }

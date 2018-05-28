@@ -45,4 +45,23 @@ Feature: ICLVDispute
       | UserName   | Password |
       | davidsauce | Welcome1 |
       
+    Scenario Outline: Resolve an open dispute and check it returns to debtor.
+    Given I navigate to the ICLV home page
+    When I click on Sign In link
+    Then I should see the Login Page
+    When I enter <UserName> and <Password>
+    And I click Login button
+    Then I should see the Tool main page
+    Given I click supplier Invoices tab
+    When I click on debtor "DANPER TRUJILLO S.A.C."
+    And select a disputed invoice
+    And resolve the dispute with a note
+    Then the invoice is no longer disputed
+    Given I click To Pay for supplier
+    When I click invoice resolved
+    Then it is pending to be approved
+    
+    Examples: 
+      | UserName   | Password |
+      | davidsauce | Welcome1 |
   

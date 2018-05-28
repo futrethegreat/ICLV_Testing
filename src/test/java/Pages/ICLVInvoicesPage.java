@@ -16,7 +16,7 @@ import com.ctc.Utils;
 		
 		@FindBys(
 	        {
-	        	@FindBy(xpath="//*[@id=\"206|65|PE20523625633\"]/div"),
+	        	@FindBy(xpath=".//*[@id=\"206|65|PE20523625633\"]/div"),
 		        @FindBy(id="ot55")
 		    }
 		)
@@ -24,11 +24,37 @@ import com.ctc.Utils;
 
 		@FindBys(
 			{
-				@FindBy(xpath="//*[@id=\"206|65|PE20523625633\"]"),
+				@FindBy(xpath=".//*[@id=\"206|65|PE20523625633\"]"),
 				@FindBy(id="ot80")
 			}
 		)
 		public WebElement tblInvoices;
+
+		@FindBys(
+			{
+				@FindBy(xpath=".//*[@id=\"206|65|PE20523625633\"]"),
+				@FindBy(xpath=".//*[@id=\"asform\"]/h3/table/tbody/tr[1]/td[2]/div")
+			}
+			)
+		public WebElement btnResolveQuery;
+		
+		@FindBys(
+			{
+				@FindBy(xpath=".//*[@id=\"206|65|PE20523625633\"]"),
+				@FindBy(id = "execute1")
+			}
+		)
+//			@FindBy(id = "execute1")
+		public WebElement btnExecute;		
+		
+		@FindBys(
+			{
+				@FindBy(xpath="//*[@id=\"206|65|PE20523625633\"]"),
+				@FindBy(id = "note")
+			}
+		)
+//			@FindBy(id = "note")
+		public WebElement txtNoteBox;		
 
 //		@FindBy(id = "ot55")
 //		public WebElement tblDebtors;
@@ -78,9 +104,54 @@ import com.ctc.Utils;
 //				Utils.consoleMsg("4: " + rowCells.get(4).getText());
 				if (rowCells.get(1).getText().equals(invoiceID)) {
 //					Utils.consoleMsg("Task: " + rowCells.get(1).getText());
-					r = rowCells.get(7).getText().length()!=0;
+					r = rowCells.get(9).getText().length()!=0;
 				}
 			}
 			return r;
+		}
+
+		public String clickInvoiceDisputed(WebDriver driver) {
+			String documentID = "";
+			
+			// Table rows
+			List<WebElement> tableRows = tblInvoices.findElements(By.tagName("tr"));
+			// Row#1 columns
+			List<WebElement> rowCells = tableRows.get(1).findElements(By.tagName("td"));
+			// Click on first data row
+			Utils.waitUntil_isClickable(driver, rowCells.get(1));
+			
+//			Utils.consoleMsg("size: " + tableRows.size());
+//			Utils.consoleMsg("invoice ID: " + invoiceID);
+			for (int i=1;i<tableRows.size();i++) {
+				rowCells = tableRows.get(i).findElements(By.tagName("td"));
+//				Utils.consoleMsg("0: " + rowCells.get(0).getText());
+//				Utils.consoleMsg("1: " + rowCells.get(1).getText());
+//				Utils.consoleMsg("2: " + rowCells.get(2).getText());
+//				Utils.consoleMsg("3: " + rowCells.get(3).getText());
+//				Utils.consoleMsg("Task: [" + rowCells.get(9).getText() + "]");
+				if (rowCells.get(9).getText().trim().length()!=0) {
+					rowCells.get(1).click();
+					documentID = rowCells.get(1).getText();
+					break;
+				}
+			}
+			return documentID;
+		}
+
+		public void setTxtNoteBox(WebDriver driver, String s) {
+			Utils.waitUntil_isClickable(driver, txtNoteBox);
+			txtNoteBox.clear();
+			txtNoteBox.sendKeys(s);
+		}
+		
+		public void clickBtnResolveQuery(WebDriver driver) throws InterruptedException  {
+			Utils.waitUntil_isClickable(driver, btnResolveQuery);
+			btnResolveQuery.click();
+		}
+		
+		public void clickBtnExecute(WebDriver driver) throws InterruptedException {
+			Utils.waitUntil_isClickable(driver, btnExecute);
+			btnExecute.click();
+			Thread.sleep(750);
 		}
 	}
