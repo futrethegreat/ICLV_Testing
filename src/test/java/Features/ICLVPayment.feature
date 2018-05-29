@@ -9,8 +9,8 @@ Feature: ICLVPayment
     When I enter <UserName> and <Password>
     And I click Login button
     Then I should see the Tool main page
-    Given I click the Payables tab
-    When I click first invoice to pay
+    Given I click the Payables link for "DANPER TRUJILLO S.A.C."
+    When I click first invoice not disputed to pay it
     And I click the Pay invoice implementation
     And I enter the amount 1.1
     And I click Execute
@@ -30,8 +30,8 @@ Feature: ICLVPayment
     When I enter <UserName> and <Password>
     And I click Login button
     Then I should see the Tool main page
-    Given I click the Payables tab
-    When I click first invoice to pay
+    Given I click the Payables link for "DANPER TRUJILLO S.A.C."
+    When I click first invoice not disputed to pay it
     And I click the Pay invoice implementation
     And I enter the amount 0
     And I click Execute
@@ -48,8 +48,8 @@ Feature: ICLVPayment
     When I enter <UserName> and <Password>
     And I click Login button
     Then I should see the Tool main page
-    Given I click the Payables tab
-    When I click first invoice to pay
+    Given I click the Payables link for "DANPER TRUJILLO S.A.C."
+    When I click first invoice not disputed to pay it
     And I click the Pay invoice implementation
     And I enter an amount larger than the remaining
     And I click Execute

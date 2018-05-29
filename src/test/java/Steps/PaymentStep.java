@@ -30,17 +30,15 @@ import cucumber.api.java.en.When;
 /**
  * @author DavidSauce
  * 
- *         Implements ICLVPayment.feature steps:
- * 
- * 
+ *         Implements ICLVPayment.feature steps
  *
  */
 public class PaymentStep extends BaseUtil {
 
-	String parentHandle;
 	BigDecimal previousAmount;
 	BigDecimal expectedAmount;
 	BigDecimal nextAmount;
+	BigDecimal amount2Pay;
 	String documentID;
 
 	private BaseUtil base;
@@ -49,152 +47,99 @@ public class PaymentStep extends BaseUtil {
 		this.base = base;
 	}
 
-	@Given("^I click the Payables tab$")
-	public void givenIClickThePayablesTab() throws InterruptedException {
-
+	/**
+	 * Clicks on debtor To Pay menu link. Parameter is not used at this moment. It
+	 * is just to give clarity to feature step to know which debtor is used.
+	 * 
+	 * @param debtor
+	 * @throws InterruptedException
+	 */
+	@Given("^I click the Payables link for \"([^\"]*)\"$")
+	public void givenIClickThePayablesLinkFor(String debtor) throws InterruptedException {
 		ICLVToolMainPage ICLVToolMainPage = new ICLVToolMainPage(base.driver);
-		ICLVToolMainPage.clickLnkCTC();
+		// ICLVToolMainPage.clickLnkCTC();
 		ICLVToolMainPage.clickLnkDANPER();
 		ICLVToolMainPage.clickLnkPayablesDANPER();
-		// Utils.waitUntil_isPresent(base.driver, By.linkText("Payables"));
-		// WebElement lnkPayables = base.driver.findElement(By.linkText("Payables"));
-		// lnkPayables.click();
 	}
 
-	@When("^I click first invoice to pay$")
-	public void whenIClickFirstInvoiceToPay() {
-		// Payables page
-		parentHandle = base.driver.getWindowHandle();
-		for (String winHandle : base.driver.getWindowHandles()) {
-			base.driver.switchTo().window(winHandle);
-		}
+	/**
+	 * Finds first invoice not disputed pending to pay, gets pending amount and
+	 * clicks on it to display side menu.
+	 */
+	@When("^I click first invoice not disputed to pay it$")
+	public void whenIClickFirstInvoiceNotDisputedToPayIt() {
 		ICLVPayablesPage ICLVPayablesPage = new ICLVPayablesPage(base.driver);
-		ICLVPayablesPage.clickTblInvoices1stRow(base.driver);
-
-		// // Access table data
-		// Utils.waitUntil_isPresent(base.driver, By.id("ot80"));
-		// WebElement InvoicesTable = base.driver.findElement(By.id("ot80"));
-		// // Table rows
-		// List<WebElement> tableRows = InvoicesTable.findElements(By.tagName("tr"));
-		// // // Row#1 columns
-		// List<WebElement> rowCells = tableRows.get(1).findElements(By.tagName("td"));
-		// // // Click on first data row
-		// Utils.waitUntil_isClickable(base.driver, rowCells.get(1));
-		// rowCells.get(1).click();
+		previousAmount = new BigDecimal(ICLVPayablesPage.getPendingAmount1stNotDisputed(base.driver, true));
 	}
 
+	/**
+	 * Clicks on Pay now option from drop down menu.
+	 */
 	@And("^I click the Pay invoice implementation$")
 	public void andIClickThePayInvoiceImplementation() {
-
 		ICLVPayablesPage ICLVPayablesPage = new ICLVPayablesPage(base.driver);
 		ICLVPayablesPage.clickLstOption();
 		ICLVPayablesPage.clickLstOptionPayInvoice();
-
-		// // Click on list box row to unfold
-		// WebElement lstOption =
-		// base.driver.findElement(By.xpath("//*[@id=\"selectedActTypeid_chosen\"]/a/div/b"));
-		// lstOption.click();
-		// // Click on Pay invoice option from the list
-		// lstOption =
-		// base.driver.findElement(By.xpath("//*[@id=\"selectedActTypeid_chosen\"]/div/ul/li[1]"));
-		// lstOption.click();
 	}
 
+	/**
+	 * Enters the amount specified in feature step. Makes calculations to get
+	 * expected amount in order to use it in final assessment.
+	 * 
+	 * @param amount
+	 */
 	@And("^I enter the amount (.+)$")
 	public void andIEnterTheAmount(BigDecimal amount) {
-
 		ICLVPayablesPage ICLVPayablesPage = new ICLVPayablesPage(base.driver);
 		ICLVPayablesPage.setTxtAmount(base.driver, amount.toString());
-
-		// // Wait until the list is folded and the Amount field is displayed again.
-		// Then
-		// // type an amount.
-		// Utils.waitUntil_isPresent(base.driver, By.id("PAYAMT"));
-		// WebElement txtAmount = base.driver.findElement(By.id("PAYAMT"));
-		// txtAmount.clear();
-		// txtAmount.sendKeys(amount.toString());
-
-		// These lines are for checking operation and display in console.
-		WebElement InvoicesTable = base.driver.findElement(By.id("ot80"));
-		List<WebElement> tableRows = InvoicesTable.findElements(By.tagName("tr"));
-		List<WebElement> rowCells = tableRows.get(1).findElements(By.tagName("td"));
-		BigDecimal amount2Pay = new BigDecimal(amount.toString());
-		previousAmount = new BigDecimal(rowCells.get(6).getText().replace(",", ""));
+		amount2Pay = new BigDecimal(amount.toString());
 		expectedAmount = previousAmount.subtract(amount2Pay);
-
-		// Get DocumentID for database checking
-		documentID = rowCells.get(0).getText();
 	}
 
+	/**
+	 * Clicks on Execute button.
+	 */
 	@And("^I click Execute$")
 	public void andIClickExecute() {
-
 		ICLVPayablesPage ICLVPayablesPage = new ICLVPayablesPage(base.driver);
 		ICLVPayablesPage.clickBtnExecute(base.driver);
-
-		// ICLVPayablesPage.clickBtnConfirmOK(base.driver);
-
-		// // Click on Execute button
-		// WebElement btnExecute = base.driver.findElement(By.id("execute1"));
-		// btnExecute.click();
-		// Utils.waitUntil_isClickable(base.driver, By.id("confirmok"));
-		// WebElement btnOK = base.driver.findElement(By.id("confirmok"));
-		// btnOK.click();
 	}
 
+	/**
+	 * Enters password and code provided in the confirmation popup.
+	 * 
+	 * @param password
+	 */
 	@And("^I enter \"([^\"]*)\" as password and the code provided$")
-	public void whenIEnterPasswordAndTheCodeProvided(String password) throws Throwable {
+	public void whenIEnterPasswordAndTheCodeProvided(String password) {
 		ICLVPayablesPage ICLVPayablesPage = new ICLVPayablesPage(base.driver);
 		String code = ICLVPayablesPage.getCodeFromConfirmMsg(base.driver);
 		ICLVPayablesPage.setTxtConfirmCode(base.driver, code);
 		ICLVPayablesPage.setTxtConfirmPassword(base.driver, password);
 	}
 
+	/**
+	 * Clicks OK button of confirmation popup in order to confirm payment.
+	 * @throws InterruptedException 
+	 */
 	@And("^I click OK$")
-	public void andIClickOK() {
-
+	public void andIClickOK() throws InterruptedException {
 		ICLVPayablesPage ICLVPayablesPage = new ICLVPayablesPage(base.driver);
 		ICLVPayablesPage.clickBtnConfirmOK(base.driver);
-
-		// // Click on OK button
-		// Utils.waitUntil_isClickable(base.driver, By.id("confirmok"));
-		// WebElement btnOK = base.driver.findElement(By.id("confirmok"));
-		// btnOK.click();
 	}
 
+	/**
+	 * Checks displayed pending amount is reduced according to amount paid.
+	 * 
+	 * @param amount
+	 * @throws InterruptedException
+	 */
 	@Then("^Open amount of invoice is decreased by (.+)$")
-	public void thenOpenAmountOfInvoiceIsDecreasedBy(BigDecimal amount)
-			throws InterruptedException, MalformedURLException {
+	public void thenOpenAmountOfInvoiceIsDecreasedBy(BigDecimal amount) throws InterruptedException {
 		ICLVPayablesPage ICLVPayablesPage = new ICLVPayablesPage(base.driver);
-		Thread.sleep(1500); // ESTA ESPERA HAY QUE HACERLO DINAMICO
-
-		nextAmount = new BigDecimal(ICLVPayablesPage.getTblInvoices1stRowAmount(base.driver));
+		Thread.sleep(1500); // Waits for the invoice table to be reloaded. No way to do it dinamically.
+		nextAmount = new BigDecimal(ICLVPayablesPage.getPendingAmount1stNotDisputed(base.driver, true));
 		assertEquals("Open amount is not correct.", expectedAmount.toString(), nextAmount.toString());
-
-		// // Click on Refresh button
-		// Thread.sleep(1500); // ESTA ESPERA HAY QUE HACERLO DINAMICO
-		// WebElement btnRefresh = base.driver.findElement(By.id("refreshicon"));
-		// Utils.waitUntil_isClickable(base.driver, btnRefresh);
-		// btnRefresh.click();
-		// Utils.waitUntil_isClickable(base.driver, btnRefresh);
-		//
-		// WebElement InvoicesTable = base.driver.findElement(By.id("ot80"));
-		// List<WebElement> tableRows = InvoicesTable.findElements(By.tagName("tr"));
-		// List<WebElement> rowCells = tableRows.get(1).findElements(By.tagName("td"));
-		// Utils.waitUntil_isClickable(base.driver, rowCells.get(6));
-		// nextAmount = new BigDecimal(rowCells.get(6).getText().replace(",", ""));
-		// assertEquals("Open amount is not correct.", expectedAmount.toString(),
-		// nextAmount.toString());
-
-		// These lines are just for checking operation and display in console.
-		// Utils.consoleMsg("Previous: " + previousAmount.toString() + " - Expected: " +
-		// expectedAmount.toString()
-		// + " - Returned: " + nextAmount.toString());
-		// if (expectedAmount.compareTo(nextAmount) == 0) {
-		// System.out.println("WORKING GOOD! :-D");
-		// } else {
-		// System.out.println("WORKING BAD! X-(");
-		// }
 	}
 
 	@And("^Amount in database is also updated$")
@@ -220,8 +165,7 @@ public class PaymentStep extends BaseUtil {
 	@Then("^the system should say it is not possible$")
 	public void thenTheSystemShouldSayItIsNotPossible() throws Exception {
 		ICLVPayablesPage ICLVPayablesPage = new ICLVPayablesPage(base.driver);
-		assertEquals("Error message not found.",
-				"Please enter an amount between 0 and the exposure on the invoice",
+		assertEquals("Error message not found.", "Please enter an amount between 0 and the exposure on the invoice",
 				ICLVPayablesPage.getLblErrorAmount(base.driver));
 		// Utils.consoleMsg("Error message: " +
 		// ICLVPayablesPage.getTxtErrorAmountTooBig(base.driver));
@@ -272,7 +216,6 @@ public class PaymentStep extends BaseUtil {
 			Map<String, String> map = getQueryMap(aURL.getQuery());
 			LEID = map.get("leid");
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return LEID;
