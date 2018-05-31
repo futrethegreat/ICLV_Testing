@@ -84,9 +84,9 @@ public class Utils {
 			}
 		}
 
-		consoleMsg("User.dir: " + System.getProperty("user.dir"));
-		consoleMsg("DriverFile: " + DriverFile);
-		consoleMsg("DriverType: " + DriverType);
+//		consoleMsg("User.dir: " + System.getProperty("user.dir"));
+//		consoleMsg("DriverFile: " + DriverFile);
+//		consoleMsg("DriverType: " + DriverType);
 	}
 
 	public static void consoleMsg(String msg) {

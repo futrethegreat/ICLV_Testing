@@ -32,10 +32,6 @@ public class Hook extends BaseUtil {
 	public void InitializeTest() throws InterruptedException {
 		Utils.setEnvironment();
 		base.driver = openBrowser();
-
-		Utils.consoleMsg(
-				"Opening browser: " + Utils.BROWSER + " for " + Utils.OperatingSystem.toUpperCase().toString());
-
 	}
 
 	@After
@@ -48,16 +44,12 @@ public class Hook extends BaseUtil {
 		String browserName = caps.getBrowserName();
 		String browserVersion = caps.getVersion();
 
-		Utils.consoleMsg(
-				"OS = " + Utils.OperatingSystem.toUpperCase() + ", Browser = " + browserName + " " + browserVersion);
-
 		base.driver.quit();
 	}
 
 	@SuppressWarnings("unused")
 	private WebDriver openBrowser() {
 		// Passing the real webdriver for the browser selected
-		Utils.consoleMsg("Before setting up browser driver for browser: " + Utils.BROWSER);
 
 		System.setProperty(Utils.DriverType, Utils.DriverFile);
 		// driver se puede usar en LoginStep por dependency injection usando

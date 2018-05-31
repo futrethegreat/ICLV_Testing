@@ -138,8 +138,7 @@ public class ICLVPayablesPage {
 
 	/**
 	 * Clicks on first invoice in the status received on status param for supplier
-	 * param, if this is specified.
-	 * Returns document ID
+	 * param, if this is specified. Returns document ID
 	 * 
 	 * @param status
 	 * @param driver
@@ -175,7 +174,7 @@ public class ICLVPayablesPage {
 	}
 
 	/**
-	 * Returns pending amount to pay for first invoice not in Disputed neither
+	 * Returns pending amount to pay for first OPEN invoice not in Disputed neither
 	 * Solved
 	 * 
 	 * @param driver
@@ -195,7 +194,8 @@ public class ICLVPayablesPage {
 			rowCells = tableRows.get(i).findElements(By.tagName("td"));
 
 			if ((rowCells.get(11).getText().equals("Dispute") == false)
-					&& (rowCells.get(11).getText().equals("Solved") == false)) {
+					&& (rowCells.get(11).getText().equals("Solved") == false)
+					&& (rowCells.get(13).getText().equals("Open"))) {
 				if (click) {
 					rowCells.get(0).click();
 				}
@@ -203,6 +203,115 @@ public class ICLVPayablesPage {
 			}
 		}
 		return rowCells.get(6).getText().replace(",", "");
+	}
+
+	/**
+	 * Returns documentID for first OPEN invoice not in Disputed neither Solved
+	 * 
+	 * @param driver
+	 * @return
+	 */
+	public String getDocumentID1stNotDisputed(WebDriver driver) {
+		// Table rows
+		List<WebElement> tableRows = tblInvoices.findElements(By.tagName("tr"));
+		// Row#1 columns
+		List<WebElement> rowCells = tableRows.get(1).findElements(By.tagName("td"));
+		// Click on first data row
+		Utils.waitUntil_isClickable(driver, rowCells.get(1));
+
+		for (int i = 1; i < tableRows.size(); i++) {
+			rowCells = tableRows.get(i).findElements(By.tagName("td"));
+
+			if ((rowCells.get(11).getText().equals("Dispute") == false)
+					&& (rowCells.get(11).getText().equals("Solved") == false)
+					&& (rowCells.get(13).getText().equals("Open"))) {
+				break;
+			}
+		}
+		return rowCells.get(0).getText();
+	}
+
+	/**
+	 * Returns documentID for first invoice with APPROVED status equals to status
+	 * param
+	 * 
+	 * @param driver
+	 * @param status
+	 * @param click
+	 *            -> if true, also line found is clicked
+	 * @return documentID for first document which fits condition
+	 */
+	public String getDocumentID1stStatusApproved(WebDriver driver, String status, boolean click) {
+		// Table rows
+		List<WebElement> tableRows = tblInvoices.findElements(By.tagName("tr"));
+		// Row#1 columns
+		List<WebElement> rowCells = tableRows.get(1).findElements(By.tagName("td"));
+		// Click on first data row
+		Utils.waitUntil_isClickable(driver, rowCells.get(1));
+
+		for (int i = 1; i < tableRows.size(); i++) {
+			rowCells = tableRows.get(i).findElements(By.tagName("td"));
+
+			if (rowCells.get(12).getText().equals(status)) {
+				if (click) {
+					rowCells.get(0).click();
+				}
+				break;
+			}
+		}
+		return rowCells.get(0).getText();
+	}
+
+	/**
+	 * Returns pending amount to pay for specified documentID
+	 * 
+	 * @param driver
+	 * @param documentID
+	 *
+	 * @return
+	 */
+	public String getPendingAmountForDocumentID(WebDriver driver, String documentID) {
+		// Table rows
+		List<WebElement> tableRows = tblInvoices.findElements(By.tagName("tr"));
+		// Row#1 columns
+		List<WebElement> rowCells = tableRows.get(1).findElements(By.tagName("td"));
+		// Click on first data row
+		Utils.waitUntil_isClickable(driver, rowCells.get(1));
+
+		for (int i = 1; i < tableRows.size(); i++) {
+			rowCells = tableRows.get(i).findElements(By.tagName("td"));
+
+			if (rowCells.get(0).getText().equals(documentID)) {
+				break;
+			}
+		}
+		return rowCells.get(6).getText().replace(",", "");
+	}
+
+	/**
+	 * Returns Approved status for specified documentID
+	 * 
+	 * @param driver
+	 * @param documentID
+	 *
+	 * @return
+	 */
+	public String getApprovedStatusForDocumentID(WebDriver driver, String documentID) {
+		// Table rows
+		List<WebElement> tableRows = tblInvoices.findElements(By.tagName("tr"));
+		// Row#1 columns
+		List<WebElement> rowCells = tableRows.get(1).findElements(By.tagName("td"));
+		// Click on first data row
+		Utils.waitUntil_isClickable(driver, rowCells.get(1));
+
+		for (int i = 1; i < tableRows.size(); i++) {
+			rowCells = tableRows.get(i).findElements(By.tagName("td"));
+
+			if (rowCells.get(0).getText().equals(documentID)) {
+				break;
+			}
+		}
+		return rowCells.get(12).getText();
 	}
 
 	public String getTblInvoices1stRowAmount(WebDriver driver) {

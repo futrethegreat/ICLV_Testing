@@ -70,6 +70,7 @@ public class PaymentStep extends BaseUtil {
 	public void whenIClickFirstInvoiceNotDisputedToPayIt() {
 		ICLVPayablesPage ICLVPayablesPage = new ICLVPayablesPage(base.driver);
 		previousAmount = new BigDecimal(ICLVPayablesPage.getPendingAmount1stNotDisputed(base.driver, true));
+		documentID = ICLVPayablesPage.getDocumentID1stNotDisputed(base.driver);
 	}
 
 	/**
@@ -88,11 +89,15 @@ public class PaymentStep extends BaseUtil {
 	 * 
 	 * @param amount
 	 */
-	@And("^I enter the amount (.+)$")
-	public void andIEnterTheAmount(BigDecimal amount) {
+	@And("^I enter the amount \"([^\"]*)\"$")
+	public void andIEnterTheAmount(String amount) {
 		ICLVPayablesPage ICLVPayablesPage = new ICLVPayablesPage(base.driver);
-		ICLVPayablesPage.setTxtAmount(base.driver, amount.toString());
-		amount2Pay = new BigDecimal(amount.toString());
+		if (amount.equals("Full")) {
+			amount2Pay = previousAmount;
+		} else {
+			amount2Pay = new BigDecimal(amount);
+		}
+		ICLVPayablesPage.setTxtAmount(base.driver, amount2Pay.toString());
 		expectedAmount = previousAmount.subtract(amount2Pay);
 	}
 
@@ -134,17 +139,16 @@ public class PaymentStep extends BaseUtil {
 	 * @param amount
 	 * @throws InterruptedException
 	 */
-	@Then("^Open amount of invoice is decreased by (.+)$")
-	public void thenOpenAmountOfInvoiceIsDecreasedBy(BigDecimal amount) throws InterruptedException {
+	@Then("^Open amount of invoice is decreased by \"([^\"]*)\"$")
+	public void thenOpenAmountOfInvoiceIsDecreasedBy(String amount) throws InterruptedException {
 		ICLVPayablesPage ICLVPayablesPage = new ICLVPayablesPage(base.driver);
 		Thread.sleep(1500); // Waits for the invoice table to be reloaded. No way to do it dinamically.
-		nextAmount = new BigDecimal(ICLVPayablesPage.getPendingAmount1stNotDisputed(base.driver, true));
+		nextAmount = new BigDecimal(ICLVPayablesPage.getPendingAmountForDocumentID(base.driver, documentID));
 		assertEquals("Open amount is not correct.", expectedAmount.toString(), nextAmount.toString());
 	}
 
 	@And("^Amount in database is also updated$")
 	public void AmountInDatabaseIsAlsoUpdated() {
-		System.out.println(expectedAmount.toString() + " - " + getOpenAmountFromDB());
 		assertEquals("Open amount in DB is not correct.", expectedAmount.toString(), getOpenAmountFromDB());
 		base.driver.quit();
 	}
