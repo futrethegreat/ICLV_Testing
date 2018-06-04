@@ -10,7 +10,8 @@ Feature: ICLVPayment
     And I click Login button
     Then I should see the Tool main page
     Given I click the Payables link for "DANPER TRUJILLO S.A.C."
-    When I click first invoice not disputed to pay it
+    #When I click first invoice not disputed to pay it
+    When I click first invoice not disputed of "CAPITAL TOOL" to pay it
     And I click the Pay invoice implementation
     And I enter the amount "Full"
     And I click Execute
@@ -31,7 +32,8 @@ Feature: ICLVPayment
     And I click Login button
     Then I should see the Tool main page
     Given I click the Payables link for "DANPER TRUJILLO S.A.C."
-    When I click first invoice not disputed to pay it
+    #When I click first invoice not disputed to pay it
+    When I click first invoice not disputed of "CAPITAL TOOL" to pay it    
     And I click the Pay invoice implementation
     And I enter the amount "1.1"
     And I click Execute
@@ -52,7 +54,8 @@ Feature: ICLVPayment
     And I click Login button
     Then I should see the Tool main page
     Given I click the Payables link for "DANPER TRUJILLO S.A.C."
-    When I click first invoice not disputed to pay it
+    #When I click first invoice not disputed to pay it
+    When I click first invoice not disputed of "CAPITAL TOOL" to pay it
     And I click the Pay invoice implementation
     And I enter the amount "0"
     And I click Execute
@@ -70,11 +73,30 @@ Feature: ICLVPayment
     And I click Login button
     Then I should see the Tool main page
     Given I click the Payables link for "DANPER TRUJILLO S.A.C."
-    When I click first invoice not disputed to pay it
+    When I click first invoice not disputed of "CAPITAL TOOL" to pay it    
+    #When I click first invoice not disputed to pay it
     And I click the Pay invoice implementation
     And I enter an amount larger than the remaining
     And I click Execute
     Then the system should say it is not possible 
+
+    Examples: 
+      | UserName   | Password |
+      | davidsauce | Welcome1 |
+      
+  Scenario Outline: Make a payment for a debtor with not enough funds.
+    Given I navigate to the ICLV home page
+    When I click on Sign In link
+    Then I should see the Login Page
+    When I enter <UserName> and <Password>
+    And I click Login button
+    Then I should see the Tool main page
+    Given I click the Payables link for "DANPER TRUJILLO S.A.C."
+    When I click first invoice not disputed of "LA HACIENDA" to pay it
+    And I click the Pay invoice implementation
+    And I enter the amount "Full"
+    And I click Execute
+    Then the system should say there is no sufficient amount 
 
     Examples: 
       | UserName   | Password |

@@ -24,19 +24,41 @@ public class ICLVToolMainPage {
         {
 	        @FindBy(id="tPE20170040938_65"),
 	        @FindBy(xpath="//*[@id=\"c208\"]/div/a")
-//	        @FindBy(linkText="Payables")
         }
 	)
 	public WebElement lnkToPayDANPER;
 
 	@FindBys(
+			{
+				@FindBy(id="tPE20170040938_65"),
+				@FindBy(xpath="//*[@id=\"c212\"]/div/a")
+			}
+			)
+	public WebElement lnkAccountDANPER;
+
+	@FindBys(
+		{
+			@FindBy(id="tPE20523625633_65"),
+			@FindBy(xpath="//*[@id=\"tPE20523625633_65\"]/tbody/tr[3]/td[3]/div/a")
+		}
+		)
+	public WebElement lnkToPayCTCLATAM;
+
+	@FindBys(
         {
             @FindBy(xpath="//*[@id=\"tPE20523625633_65\"]"),
             @FindBy(xpath="//*[@id=\"tPE20523625633_65\"]/tbody/tr[2]/td[3]/div/a")
-//            @FindBy(linkText="Invoices")
         }
 	)
 	public WebElement lnkToReceiveCTCLATAM;
+
+	@FindBys(
+			{
+				@FindBy(xpath="//*[@id=\"tPE20523625633_65\"]"),
+				@FindBy(xpath="//*[@id=\"tPE20523625633_65\"]/tbody/tr[2]/td[5]/div/a")
+			}
+			)
+	public WebElement lnkAccountCTCLATAM;
 	
 	public ICLVToolMainPage(WebDriver driver) throws TimeoutException {
 		Utils.waitUntil_isPresent(driver, By.xpath("//*[@title=\"signout of TREFI\"]"));
@@ -75,8 +97,23 @@ public class ICLVToolMainPage {
 		Thread.sleep(1000);
 	}
 
+	public void clickLnkAccountDANPER() throws InterruptedException{
+		lnkAccountDANPER.click();
+		Thread.sleep(1000);
+	}
+
+	public void clickLnkPayablesCTCLATAM() throws InterruptedException{
+		lnkToPayCTCLATAM.click();
+		Thread.sleep(1000);
+	}
+
 	public void clickLnkInvoicesCTCLATAM() throws InterruptedException{
 		lnkToReceiveCTCLATAM.click();
+		Thread.sleep(1000);
+	}
+
+	public void clickLnkAccountCTCLATAM() throws InterruptedException{
+		lnkAccountCTCLATAM.click();
 		Thread.sleep(1000);
 	}
 

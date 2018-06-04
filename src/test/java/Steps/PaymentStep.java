@@ -58,8 +58,13 @@ public class PaymentStep extends BaseUtil {
 	public void givenIClickThePayablesLinkFor(String debtor) throws InterruptedException {
 		ICLVToolMainPage ICLVToolMainPage = new ICLVToolMainPage(base.driver);
 		// ICLVToolMainPage.clickLnkCTC();
-		ICLVToolMainPage.clickLnkDANPER();
-		ICLVToolMainPage.clickLnkPayablesDANPER();
+		if (debtor.contains("DANPER")) {
+			ICLVToolMainPage.clickLnkDANPER();
+			ICLVToolMainPage.clickLnkPayablesDANPER();
+		} else if (debtor.contains("LATIN AMERICA")) {
+			ICLVToolMainPage.clickLnkCTCLATAM();
+			ICLVToolMainPage.clickLnkPayablesCTCLATAM();
+		}
 	}
 
 	/**
@@ -74,7 +79,17 @@ public class PaymentStep extends BaseUtil {
 	}
 
 	/**
-	 * Clicks on Pay now option from drop down menu.
+	 * Finds first invoice not disputed pending to pay, gets pending amount and
+	 * clicks on it to display side menu.
+	 */
+	@When("^I click first invoice not disputed of \"([^\"]*)\" to pay it$")
+	public void whenIClickFirstInvoiceNotDisputedOfSupplierToPayIt(String supplier) {
+		ICLVPayablesPage ICLVPayablesPage = new ICLVPayablesPage(base.driver);
+		previousAmount = new BigDecimal(ICLVPayablesPage.getPendingAmount1stNotDisputed(base.driver, supplier, true));
+		documentID = ICLVPayablesPage.getDocumentID1stNotDisputed(base.driver, supplier);
+	}
+
+	/**	 * Clicks on Pay now option from drop down menu.
 	 */
 	@And("^I click the Pay invoice implementation$")
 	public void andIClickThePayInvoiceImplementation() {
@@ -174,6 +189,14 @@ public class PaymentStep extends BaseUtil {
 		// Utils.consoleMsg("Error message: " +
 		// ICLVPayablesPage.getTxtErrorAmountTooBig(base.driver));
 
+		base.driver.quit();
+	}
+
+	@Then("^the system should say there is no sufficient amount$")
+	public void thenTheSystemShouldSayThereIsNoSufficientAmount() throws Exception {
+		ICLVPayablesPage ICLVPayablesPage = new ICLVPayablesPage(base.driver);
+		assertEquals("Error message not found.", "The amount on your account is not sufficient to make this payment",
+				ICLVPayablesPage.getLblErrorAmount(base.driver));
 		base.driver.quit();
 	}
 

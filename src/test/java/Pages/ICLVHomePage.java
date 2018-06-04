@@ -9,11 +9,11 @@ import org.openqa.selenium.support.PageFactory;
 import com.ctc.Utils;
 
 public class ICLVHomePage {
-	@FindBy(linkText = "ACCEDER A CUENTA")
+	@FindBy(linkText = "Sign in to your account")
 	public WebElement lnkSignIn;
 
 	public ICLVHomePage(WebDriver driver) {
-		Utils.waitUntil_isPresent(driver, By.linkText("ACCEDER A CUENTA"));
+		Utils.waitUntil_isPresent(driver, By.linkText("Sign in to your account"));
 		PageFactory.initElements(driver, this);
 	}
 
