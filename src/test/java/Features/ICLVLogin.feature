@@ -1,3 +1,13 @@
+# try to dispute an invoice giving a short description (fail)
+#
+# Scenario 1: Login with correct credentials and sign out afterwards.
+# Scenario 2: Login with incorrect and empty credentials
+#							Correct user name / wrong password
+#							Wrong user name / correct password
+#							Correct user name / empty password
+#							Empty user name / correct password
+#							Empty user name / empty password
+#
 @ICLVLogin
 Feature: ICLVLogin
   This feature deals with the login functionality of the ICLV web page.
@@ -14,12 +24,7 @@ Feature: ICLVLogin
 
     Examples: 
       | UserName   | Password |
-      | davidsauce | Welcome1 |
-      #| davidsauc3 | Welcome1 |
-      #| davidsauce | Welcome2 |
-      #|   | Welcome1 |
-      #| davidsauce |   |
-      #|   |   |
+      | seleniumtesting | 123456Ab |
       
   Scenario Outline: Login with incorrect and empty credentials
     Given I navigate to the ICLV home page
@@ -31,8 +36,8 @@ Feature: ICLVLogin
 
     Examples: 
       | UserName   | Password |
-      | davidsauce | Welcome2 | 
-      | davidsauc3 | Welcome1 | 
-      | davidsauce |  |
-      |  | Welcome2 |
+      | seleniumtesting | 123456AB |
+      | seleniumtestin | 123456Ab |
+      | seleniumtesting |  |
+      |  | 123456Ab |
       |  |  |
