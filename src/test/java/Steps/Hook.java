@@ -1,13 +1,11 @@
 package Steps;
 
-import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.ctc.Utils;
 
@@ -17,6 +15,8 @@ import cucumber.api.java.After;
 import cucumber.api.java.Before;
 
 /**
+ * Class with preconditions and postconditions for all tests.
+ * 
  * @author DavidSauce
  *
  */
@@ -28,25 +28,42 @@ public class Hook extends BaseUtil {
 		this.base = base;
 	}
 
+	/**
+	 * Precondition for all tests.
+	 * Sets environment and opens browser afterwards.
+	 * 
+	 * @throws InterruptedException
+	 */
 	@Before
 	public void InitializeTest() throws InterruptedException {
 		Utils.setEnvironment();
-		base.driver = openBrowser();
+		base.driver = openBrowser(); // Opens browser following constants and variables set in Utils class.
 	}
 
+	/**
+	 * Closes browser.
+	 * 
+	 * @param scenario
+	 */
 	@After
 	public void TearDownTest(Scenario scenario) {
 		if (scenario.isFailed()) {
 			// Scenario fallido
 		}
-		// Get Browser name and version.
-		Capabilities caps = ((RemoteWebDriver) base.driver).getCapabilities();
-		String browserName = caps.getBrowserName();
-		String browserVersion = caps.getVersion();
-
-		base.driver.quit();
+//		// Get Browser name and version.
+//		Capabilities caps = ((RemoteWebDriver) base.driver).getCapabilities();
+//		String browserName = caps.getBrowserName();
+//		String browserVersion = caps.getVersion();
+//
+		base.driver.quit(); //closes browser
 	}
 
+	/**
+	 * Opens browser following variables and constants set on Utils class.
+	 * Returns browser opened as a WebDriver object.
+	 * 
+	 * @return browser session opened.
+	 */
 	@SuppressWarnings("unused")
 	private WebDriver openBrowser() {
 		// Passing the real webdriver for the browser selected
@@ -65,6 +82,7 @@ public class Hook extends BaseUtil {
 			firefoxBinary.addCommandLineOptions("--headless");
 			FirefoxOptions firefoxOptions = new FirefoxOptions();
 			firefoxOptions.setBinary(firefoxBinary);
+//			firefoxOptions.setLogLevel(FirefoxDriverLogLevel.WARN);
 			return new FirefoxDriver(firefoxOptions);
 
 			// FirefoxOptions options = new FirefoxOptions();

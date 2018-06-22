@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -20,7 +21,7 @@ import com.ctc.MariaDB;
 import com.ctc.Utils;
 
 import Base.BaseUtil;
-import Pages.ICLVPayablesPage;
+import Pages.ICLVToPayPage;
 import Pages.ICLVToolMainPage;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
@@ -30,16 +31,18 @@ import cucumber.api.java.en.When;
 /**
  * @author DavidSauce
  * 
- *         Implements ICLVPayment.feature steps
+ * Implements ICLVPayment.feature steps
  *
  */
 public class PaymentStep extends BaseUtil {
 
+	// To be used in operations to assess invoice amount is reduced properly.
 	BigDecimal previousAmount;
 	BigDecimal expectedAmount;
 	BigDecimal nextAmount;
 	BigDecimal amount2Pay;
-	String documentID;
+	
+	String documentID; // To find invoice in table to check changes.
 
 	private BaseUtil base;
 
@@ -73,7 +76,7 @@ public class PaymentStep extends BaseUtil {
 	 */
 	@When("^I click first invoice not disputed to pay it$")
 	public void whenIClickFirstInvoiceNotDisputedToPayIt() {
-		ICLVPayablesPage ICLVPayablesPage = new ICLVPayablesPage(base.driver);
+		ICLVToPayPage ICLVPayablesPage = new ICLVToPayPage(base.driver);
 		previousAmount = new BigDecimal(ICLVPayablesPage.getPendingAmount1stNotDisputed(base.driver, true));
 		documentID = ICLVPayablesPage.getDocumentID1stNotDisputed(base.driver);
 	}
@@ -84,16 +87,26 @@ public class PaymentStep extends BaseUtil {
 	 */
 	@When("^I click first invoice not disputed of \"([^\"]*)\" to pay it$")
 	public void whenIClickFirstInvoiceNotDisputedOfSupplierToPayIt(String supplier) {
-		ICLVPayablesPage ICLVPayablesPage = new ICLVPayablesPage(base.driver);
-		previousAmount = new BigDecimal(ICLVPayablesPage.getPendingAmount1stNotDisputed(base.driver, supplier, true));
+		ICLVToPayPage ICLVPayablesPage = new ICLVToPayPage(base.driver);
+
+		String auxAmount = ICLVPayablesPage.getPendingAmount1stNotDisputed(base.driver, supplier, true);
+		if (auxAmount.isEmpty()) {
+			Assert.fail("No invoice pending to pay and not disputed is available.");
+		}
+		previousAmount = new BigDecimal(auxAmount);
+		
 		documentID = ICLVPayablesPage.getDocumentID1stNotDisputed(base.driver, supplier);
+		if (documentID.isEmpty()) {
+			Assert.fail("No invoice pending to pay and not disputed is available.");
+		}
 	}
 
-	/**	 * Clicks on Pay now option from drop down menu.
+	/**	 
+	 * * Clicks on Pay now option from drop down menu.
 	 */
 	@And("^I click the Pay invoice implementation$")
 	public void andIClickThePayInvoiceImplementation() {
-		ICLVPayablesPage ICLVPayablesPage = new ICLVPayablesPage(base.driver);
+		ICLVToPayPage ICLVPayablesPage = new ICLVToPayPage(base.driver);
 		ICLVPayablesPage.clickLstOption();
 		ICLVPayablesPage.clickLstOptionPayInvoice();
 	}
@@ -106,7 +119,7 @@ public class PaymentStep extends BaseUtil {
 	 */
 	@And("^I enter the amount \"([^\"]*)\"$")
 	public void andIEnterTheAmount(String amount) {
-		ICLVPayablesPage ICLVPayablesPage = new ICLVPayablesPage(base.driver);
+		ICLVToPayPage ICLVPayablesPage = new ICLVToPayPage(base.driver);
 		if (amount.equals("Full")) {
 			amount2Pay = previousAmount;
 		} else {
@@ -121,7 +134,7 @@ public class PaymentStep extends BaseUtil {
 	 */
 	@And("^I click Execute$")
 	public void andIClickExecute() {
-		ICLVPayablesPage ICLVPayablesPage = new ICLVPayablesPage(base.driver);
+		ICLVToPayPage ICLVPayablesPage = new ICLVToPayPage(base.driver);
 		ICLVPayablesPage.clickBtnExecute(base.driver);
 	}
 
@@ -132,7 +145,7 @@ public class PaymentStep extends BaseUtil {
 	 */
 	@And("^I enter \"([^\"]*)\" as password and the code provided$")
 	public void whenIEnterPasswordAndTheCodeProvided(String password) {
-		ICLVPayablesPage ICLVPayablesPage = new ICLVPayablesPage(base.driver);
+		ICLVToPayPage ICLVPayablesPage = new ICLVToPayPage(base.driver);
 		String code = ICLVPayablesPage.getCodeFromConfirmMsg(base.driver);
 		ICLVPayablesPage.setTxtConfirmCode(base.driver, code);
 		ICLVPayablesPage.setTxtConfirmPassword(base.driver, password);
@@ -140,11 +153,12 @@ public class PaymentStep extends BaseUtil {
 
 	/**
 	 * Clicks OK button of confirmation popup in order to confirm payment.
+	 * 
 	 * @throws InterruptedException 
 	 */
 	@And("^I click OK$")
 	public void andIClickOK() throws InterruptedException {
-		ICLVPayablesPage ICLVPayablesPage = new ICLVPayablesPage(base.driver);
+		ICLVToPayPage ICLVPayablesPage = new ICLVToPayPage(base.driver);
 		ICLVPayablesPage.clickBtnConfirmOK(base.driver);
 	}
 
@@ -156,18 +170,25 @@ public class PaymentStep extends BaseUtil {
 	 */
 	@Then("^Open amount of invoice is decreased by \"([^\"]*)\"$")
 	public void thenOpenAmountOfInvoiceIsDecreasedBy(String amount) throws InterruptedException {
-		ICLVPayablesPage ICLVPayablesPage = new ICLVPayablesPage(base.driver);
+		ICLVToPayPage ICLVPayablesPage = new ICLVToPayPage(base.driver);
 		Thread.sleep(1500); // Waits for the invoice table to be reloaded. No way to do it dinamically.
 		nextAmount = new BigDecimal(ICLVPayablesPage.getPendingAmountForDocumentID(base.driver, documentID));
 		assertEquals("Open amount is not correct.", expectedAmount.toString(), nextAmount.toString());
 	}
 
+	/**
+	 * Checks invoice pending amount is also reduced in database.
+	 */
 	@And("^Amount in database is also updated$")
 	public void AmountInDatabaseIsAlsoUpdated() {
 		assertEquals("Open amount in DB is not correct.", expectedAmount.toString(), getOpenAmountFromDB());
 		base.driver.quit();
 	}
 
+	/**
+	 * Enters in the Amount field an amount larger than the remaining to pay in the invoice.
+	 * 
+	 */
 	@And("^I enter an amount larger than the remaining$")
 	public void andIEnterAnAmountLargerThanTheRemaining() {
 
@@ -177,29 +198,39 @@ public class PaymentStep extends BaseUtil {
 		previousAmount = new BigDecimal(rowCells.get(6).getText().replace(",", ""));
 		BigDecimal amount2Pay = previousAmount.add(new BigDecimal(1));
 
-		ICLVPayablesPage ICLVPayablesPage = new ICLVPayablesPage(base.driver);
+		ICLVToPayPage ICLVPayablesPage = new ICLVToPayPage(base.driver);
 		ICLVPayablesPage.setTxtAmount(base.driver, amount2Pay.toString());
 	}
 
+	/**
+	 * Checks and asess error message returned by the system when the amount is incorrect.
+	 * 
+	 * @throws Exception
+	 */
 	@Then("^the system should say it is not possible$")
 	public void thenTheSystemShouldSayItIsNotPossible() throws Exception {
-		ICLVPayablesPage ICLVPayablesPage = new ICLVPayablesPage(base.driver);
+		ICLVToPayPage ICLVPayablesPage = new ICLVToPayPage(base.driver);
 		assertEquals("Error message not found.", "Please enter an amount between 0 and the exposure on the invoice",
 				ICLVPayablesPage.getLblErrorAmount(base.driver));
-		// Utils.consoleMsg("Error message: " +
-		// ICLVPayablesPage.getTxtErrorAmountTooBig(base.driver));
-
-		base.driver.quit();
 	}
 
+	/**
+	 * Checks and asess error message returned by the system when the debtor has not enough funds.
+	 * 
+	 * @throws Exception
+	 */
 	@Then("^the system should say there is no sufficient amount$")
 	public void thenTheSystemShouldSayThereIsNoSufficientAmount() throws Exception {
-		ICLVPayablesPage ICLVPayablesPage = new ICLVPayablesPage(base.driver);
+		ICLVToPayPage ICLVPayablesPage = new ICLVToPayPage(base.driver);
 		assertEquals("Error message not found.", "The amount on your account is not sufficient to make this payment",
 				ICLVPayablesPage.getLblErrorAmount(base.driver));
-		base.driver.quit();
 	}
 
+	/**
+	 * Connects to database and returns pending amount for the working invoice.
+	 * 
+	 * @return pending amount as String.
+	 */
 	public String getOpenAmountFromDB() {
 		MariaDB javaMySQLBasic = new MariaDB();
 		Connection c;
@@ -235,6 +266,11 @@ public class PaymentStep extends BaseUtil {
 		return openAMT;
 	}
 
+	/**
+	 * Gets lender ID from the URL parameters.
+	 * 
+	 * @return
+	 */
 	public String getLEID() {
 		String LEID = "";
 		try {
@@ -248,6 +284,12 @@ public class PaymentStep extends BaseUtil {
 		return LEID;
 	}
 
+	/**
+	 * Set ups a Map struct to store URL parameters.
+	 * 
+	 * @param query
+	 * @return
+	 */
 	public static Map<String, String> getQueryMap(String query) {
 		String[] params = query.split("&");
 		Map<String, String> map = new HashMap<String, String>();

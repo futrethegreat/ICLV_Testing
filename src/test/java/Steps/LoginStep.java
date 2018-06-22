@@ -18,31 +18,45 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
+
+/**
+ * Implements ICLVLogin.feature steps
+ * 
+ * @author DavidSauce
+ *
+ */
 public class LoginStep extends BaseUtil {
 
-	String parentHandle;
+	String parentHandle; //used to control new windows
 
 	private BaseUtil base;
-	// public final String TrefiMainHomePage = "http://www.trefi.com";
-	// public final String SecureTrefiPage = "https://secure.trefi.com/auth/";
 	public final String ICLVHomePage = "https://iclvtestweb.capitool.com";
 
 	public LoginStep(BaseUtil base) {
 		this.base = base;
 	}
 
+	/**
+	 * Navigates to ICLV home page.
+	 */
 	@Given("^I navigate to the ICLV home page$")
 	public void givenINavigateToTheICLVHomePage() {
 		base.driver.get(ICLVHomePage);
+		base.driver.manage().window().maximize();
 	}
 
+	/**
+	 * Clicks on Sign in link.
+	 */
 	@And("^I click on Sign In link")
 	public void andIClickOnSignInLink() {
-
 		ICLVHomePage ICLVHomePage = new ICLVHomePage(base.driver);
 		ICLVHomePage.clickLnkSignIn();
 	}
 
+	/**
+	 * Checks login page is correctly loaded.
+	 */
 	@Then("^I should see the Login Page")
 	public void thenIShouldSeeTheLoginPage() {
 		parentHandle = base.driver.getWindowHandle();
@@ -53,6 +67,13 @@ public class LoginStep extends BaseUtil {
 		assertEquals("User name field NOT found. Login page NOT reached.", "", ICLVLoginPage.getUserName());
 	}
 
+	/**
+	 * Enters userName and password as credentials to login.
+	 * 
+	 * @param userName
+	 * @param password
+	 * @throws Throwable
+	 */
 	@When("^I enter ([^\"]*) and ([^\"]*)$")
 	public void whenIEnterUsernameAndPassword(String userName, String password) throws Throwable {
 		ICLVLoginPage ICLVLoginPage = new ICLVLoginPage(base.driver);
@@ -60,14 +81,24 @@ public class LoginStep extends BaseUtil {
 		Utils.waitFor(2500);
 	}
 
+	/**
+	 * Clicks on Login button.
+	 */
 	@And("^I click Login button$")
 	public void andIClickLoginButton() {
 		ICLVLoginPage ICLVLoginPage = new ICLVLoginPage(base.driver);
 		ICLVLoginPage.clickLogInBtn();
 	}
 
+	/**
+	 * Checks and assess Tool main page is correctly loaded.
+	 * 
+	 * @throws Exception
+	 */
 	@Then("^I should see the Tool main page$")
 	public void thenIShouldSeeTheToolMainPage() throws Exception {
+		base.driver.manage().window().maximize();
+
 		try {
 			ICLVToolMainPage ICLVToolMainPage = new ICLVToolMainPage(base.driver);
 			assertEquals("Sign out link not found. Tool main page not reached", "signout of TREFI",
@@ -91,6 +122,9 @@ public class LoginStep extends BaseUtil {
 		Utils.waitFor(2500);
 	}
 
+	/**
+	 * Clicks on Sign Out link.
+	 */
 	@When("^I click on Sign Out link$")
 	public void whenIClickOnSignOutLink() {
 		try {
@@ -103,6 +137,11 @@ public class LoginStep extends BaseUtil {
 		}
 	}
 
+	/**
+	 * Checks and assess Tool Sign out page is correctly loaded.
+	 * 
+	 * @throws Exception
+	 */
 	@Then("^I should see the Sign Out page$")
 	public void thenIShouldSeeTheSignOutPage() {
 		try {
@@ -120,6 +159,11 @@ public class LoginStep extends BaseUtil {
 		base.driver.switchTo().window(parentHandle);
 	}
 
+	/**
+	 * Checks an error message is received from the tool.
+	 * 
+	 * @throws Exception
+	 */
 	@Then("^I should receive error message$")
 	public void thenIShouldReceiveErrorMessage() throws Exception {
 		ICLVLoginPage ICLVLoginPage = new ICLVLoginPage(base.driver);
@@ -133,6 +177,5 @@ public class LoginStep extends BaseUtil {
 		} catch (TimeoutException e2) {
 			Utils.consoleMsg("Too many failed attemps");
 		}
-
 	}
 }
