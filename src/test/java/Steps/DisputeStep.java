@@ -161,7 +161,9 @@ public class DisputeStep extends BaseUtil {
 		if (documentID.isEmpty()) {
 			Assert.fail("No invoice disputed is available.");
 		} else {
-			ICLVToReceivePage.clickBtnResolveQuery(base.driver);
+			if (!ICLVToReceivePage.txtNoteBox.isDisplayed()) {
+				ICLVToReceivePage.clickBtnResolveQuery(base.driver);
+			}
 		}
 	}
 

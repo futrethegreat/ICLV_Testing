@@ -2,6 +2,7 @@ package com.ctc;
 
 import java.text.Normalizer;
 
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -27,7 +28,7 @@ public class Utils {
 	private final static String FirefoxDriverType = "webdriver.gecko.driver";
 
 	// Variable to specify the browser to use
-	public final static String BROWSER = "FF"; // Options might be CH FF IE SF OP. H means Headless
+	public final static String BROWSER = "FFH"; // Options might be CH FF IE SF OP. H means Headless
 	
 	// Variable to store Operating System type 
 	public final static String OperatingSystem = System.getProperty("os.name").toLowerCase();
@@ -131,15 +132,12 @@ public class Utils {
 	 * @throws TimeoutException
 	 * 
 	 */
-	public static boolean waitUntil_isPresent(final WebDriver driver, final By locator) throws TimeoutException {
+	public static void waitUntil_isPresent(final WebDriver driver, final By locator) {
 		try {
 			WebDriverWait wait = new WebDriverWait(driver, secondsToWait);
 			wait.until(ExpectedConditions.presenceOfElementLocated(locator));
-			return true;
 		} catch (TimeoutException te) {
-			// te.printStackTrace();
-			// return false;
-			throw new TimeoutException();
+			Assert.fail("Error detecting presence of object: " + locator);
 		}
 
 	}
@@ -155,15 +153,12 @@ public class Utils {
 	 * @throws TimeoutException
 	 * 
 	 */
-	public static boolean waitUntil_isNotPresent(final WebDriver driver, final By locator) throws TimeoutException {
+	public static void waitUntil_isNotPresent(final WebDriver driver, final By locator) {
 		try {
 			WebDriverWait wait = new WebDriverWait(driver, secondsToWait);
 			wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
-			return true;
 		} catch (TimeoutException te) {
-			// te.printStackTrace();
-			// return false;
-			throw new TimeoutException();
+			Assert.fail("Error detecting NOT presence of object: " + locator);
 		}
 		
 	}
@@ -179,15 +174,12 @@ public class Utils {
 	 * @throws TimeoutException
 	 * 
 	 */
-	public static boolean waitUntil_isClickable(final WebDriver driver, final By locator) throws TimeoutException {
+	public static void waitUntil_isClickable(final WebDriver driver, final By locator) {
 		try {
 			WebDriverWait wait = new WebDriverWait(driver, secondsToWait);
 			wait.until(ExpectedConditions.elementToBeClickable(locator));
-			return true;
 		} catch (TimeoutException te) {
-			// te.printStackTrace();
-			// return false;
-			throw new TimeoutException();
+			Assert.fail("Error detecting clickable object: " + locator);
 		}
 	}
 
@@ -202,15 +194,12 @@ public class Utils {
 	 * @throws TimeoutException
 	 * 
 	 */
-	public static boolean waitUntil_isClickable(final WebDriver driver, final WebElement WE) throws TimeoutException {
+	public static void waitUntil_isClickable(final WebDriver driver, final WebElement WE) {
 		try {
 			WebDriverWait wait = new WebDriverWait(driver, secondsToWait);
 			wait.until(ExpectedConditions.elementToBeClickable(WE));
-			return true;
 		} catch (TimeoutException te) {
-			// te.printStackTrace();
-			// return false;
-			throw new TimeoutException();
+			Assert.fail("Error detecting clickable object: " + WE.getAttribute("name"));
 		}
 	}
 

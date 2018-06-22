@@ -82,7 +82,7 @@ public class Hook extends BaseUtil {
 			firefoxBinary.addCommandLineOptions("--headless");
 			FirefoxOptions firefoxOptions = new FirefoxOptions();
 			firefoxOptions.setBinary(firefoxBinary);
-//			firefoxOptions.setLogLevel(FirefoxDriverLogLevel.WARN);
+			System.setProperty(FirefoxDriver.SystemProperty.BROWSER_LOGFILE,"geckodriver.log");
 			return new FirefoxDriver(firefoxOptions);
 
 			// FirefoxOptions options = new FirefoxOptions();
