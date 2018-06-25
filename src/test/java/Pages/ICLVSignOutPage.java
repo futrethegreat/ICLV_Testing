@@ -17,27 +17,28 @@ import com.ctc.Utils;
  */
 
 public class ICLVSignOutPage {
-	@FindBy(xpath = "/html/body/div/section/div/div[1]/h2")
+	@FindBy(xpath = "//*[@id=\"header\"]/p[1]") 
 	public WebElement txtSignOut;
 	@FindBy(linkText = "Acceso")
 	public WebElement lnkAcceso;
 
 	public ICLVSignOutPage(WebDriver driver) throws Exception {
 		PageFactory.initElements(driver, this);
-		Utils.waitUntil_isPresent(driver, By.xpath("/html/body/div/section/div/div[1]/h2"));
+		Utils.waitUntil_isPresent(driver, By.xpath("//*[@id=\"header\"]/p[1]"));
 	}
 
 	/**
-	 * Returns text displayed by txtSignOut object, without non standard characters.
+	 * Returns text displayed by txtSignOut object, without non standard characters,
+	 * from 0 to 22 which is text: "Gracias por usar Trefi"
 	 * 
 	 * @return Text displayed in txtSignOut object
 	 */
 	public String getTxtSignOutText() {
-		return Utils.normalizeString(this.txtSignOut.getText().toString());
+		return Utils.normalizeString(this.txtSignOut.getText().toString().substring(0, 22));
 	}
 
 	/**
-	 * Returns text typed in lnkAcceso object.
+	 * Returns text typed in lnkAcceso object as String.
 	 * 
 	 * @return text typed in lnkAcceso object as string.
 	 */

@@ -147,7 +147,7 @@ public class LoginStep extends BaseUtil {
 		try {
 			ICLVSignOutPage ICLVSignOutPage = new ICLVSignOutPage(base.driver);
 			assertEquals("SignOut text not found. Sign out not properly made.",
-					"USTED HA CERRADO EXITOSAMENTE SU SESION EN TREFI", ICLVSignOutPage.getTxtSignOutText());
+					"Gracias por usar Trefi", ICLVSignOutPage.getTxtSignOutText());
 			// fail("FALLO AL FINAL");
 			Utils.waitFor(2500);
 		} catch (Exception e) {
