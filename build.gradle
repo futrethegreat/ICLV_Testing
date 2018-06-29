@@ -4,6 +4,7 @@ plugins {
 
 // Apply the java-library plugin to add support for Java Library
 apply plugin: 'java-library'
+apply plugin: "eclipse"
 
 // In this section you declare where to find the dependencies of your project
 repositories {
@@ -12,7 +13,9 @@ repositories {
     jcenter()
 }
 test {
-  systemProperty "cucumber.options", System.properties.getProperty("cucumber.options")
+	dependsOn cleanTest
+    testLogging.showStandardStreams = true
+  	systemProperty "cucumber.options", System.properties.getProperty("cucumber.options")
 }
 
 

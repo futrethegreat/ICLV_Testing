@@ -161,7 +161,25 @@ public class DisputeStep extends BaseUtil {
 		if (documentID.isEmpty()) {
 			Assert.fail("No invoice disputed is available.");
 		} else {
+//			System.out.println("x Note: " + ICLVToReceivePage.txtNoteBox.getLocation().x);
+//			System.out.println("y Note: " + ICLVToReceivePage.txtNoteBox.getLocation().y);
+////			System.out.println("isDisplayed utils Note: " + Utils.isDisplayed(base.driver, ICLVToReceivePage.txtNoteBox));
+//			System.out.println("isEnabled Note: " + ICLVToReceivePage.txtNoteBox.isEnabled());
+//			System.out.println("isDisplayed Note: " + ICLVToReceivePage.txtNoteBox.isDisplayed());
+//			System.out.println("size: " + ICLVToReceivePage.txtNoteBox.getSize());
+//			ICLVToReceivePage.clickBtnResolveQuery(base.driver);
+//			
+//			System.out.println("x Note: " + ICLVToReceivePage.txtNoteBox.getLocation().x);
+//			System.out.println("y Note: " + ICLVToReceivePage.txtNoteBox.getLocation().y);
+////			System.out.println("isDisplayed utils Note: " + Utils.isDisplayed(base.driver, ICLVToReceivePage.txtNoteBox));
+//			System.out.println("isEnabled Note: " + ICLVToReceivePage.txtNoteBox.isEnabled());
+//			System.out.println("isDisplayed Note: " + ICLVToReceivePage.txtNoteBox.isDisplayed());
+//			System.out.println("size: " + ICLVToReceivePage.txtNoteBox.getSize());
+////			ICLVToReceivePage.clickBtnResolveQuery(base.driver);
+			
+			Thread.sleep(500); //To give time all objects be loaded.
 			if (!ICLVToReceivePage.txtNoteBox.isDisplayed()) {
+				System.out.println("Entra en if not isDisplayed: " + ICLVToReceivePage.txtNoteBox.isDisplayed());
 				ICLVToReceivePage.clickBtnResolveQuery(base.driver);
 			}
 		}
@@ -178,7 +196,8 @@ public class DisputeStep extends BaseUtil {
 	@And("^resolve the dispute with a note$")
 	public void andResolveTheDisputeWithANote() throws Exception {
 		ICLVToReceivePage ICLVToReceivePage = new ICLVToReceivePage(base.driver);
-		documentID = ICLVToReceivePage.clickInvoiceDisputed(base.driver);
+		//documentID = ICLVToReceivePage.clickInvoiceDisputed(base.driver);
+		System.out.println("DocumentID> " + documentID);
 		ICLVToReceivePage.setTxtNoteBox(base.driver, "This invoice is correct");
 		ICLVToReceivePage.clickBtnExecute(base.driver);
 

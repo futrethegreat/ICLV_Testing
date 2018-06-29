@@ -18,7 +18,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
  *
  */
 public class Utils {
-
+	
 	// Constants for browser management, Chrome and Firefox driver location and driver name.
 	private final static String ChromeDriverFileLinux = System.getProperty("user.dir") + "/src/resources/chromedriver";
 	private final static String ChromeDriverFileWindows = "src\\resources\\chromedriver.exe";
@@ -135,8 +135,9 @@ public class Utils {
 	public static void waitUntil_isPresent(final WebDriver driver, final By locator) {
 		try {
 			WebDriverWait wait = new WebDriverWait(driver, secondsToWait);
-			wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+			wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
 		} catch (TimeoutException te) {
+			System.out.println("Error detecting clickable object: " + locator);
 			Assert.fail("Error detecting presence of object: " + locator);
 		}
 
@@ -158,7 +159,33 @@ public class Utils {
 			WebDriverWait wait = new WebDriverWait(driver, secondsToWait);
 			wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
 		} catch (TimeoutException te) {
+			System.out.println("Error detecting clickable object: " + locator);
 			Assert.fail("Error detecting NOT presence of object: " + locator);
+			
+		}
+		
+	}
+
+	/**
+	 * 
+	 * Waits for the selenium object "WE" is hidden in screen and return true.
+	 * After 10 seconds, should return false.
+	 * 
+	 * @param driver: stores the web page
+	 * @param WE: selenium object to find
+	 * @return: true if object is not found. true if object is found.
+	 * @throws TimeoutException
+	 * 
+	 */
+	public static void waitUntil_isNotPresent(final WebDriver driver, final WebElement WE) {
+		try {
+			WebDriverWait wait = new WebDriverWait(driver, secondsToWait);
+			wait.until(ExpectedConditions.invisibilityOf(WE));
+			System.out.println("Invisible");
+		} catch (TimeoutException te) {
+			System.out.println("Error detecting clickable object: " + WE.getAttribute("name"));
+			Assert.fail("Error detecting NOT presence of object: " + WE.getAttribute("name"));
+			
 		}
 		
 	}
@@ -179,6 +206,7 @@ public class Utils {
 			WebDriverWait wait = new WebDriverWait(driver, secondsToWait);
 			wait.until(ExpectedConditions.elementToBeClickable(locator));
 		} catch (TimeoutException te) {
+			System.out.println("Error detecting clickable object: " + locator);
 			Assert.fail("Error detecting clickable object: " + locator);
 		}
 	}
@@ -199,6 +227,7 @@ public class Utils {
 			WebDriverWait wait = new WebDriverWait(driver, secondsToWait);
 			wait.until(ExpectedConditions.elementToBeClickable(WE));
 		} catch (TimeoutException te) {
+			System.out.println("Error detecting clickable object: " + WE.getAttribute("name"));
 			Assert.fail("Error detecting clickable object: " + WE.getAttribute("name"));
 		}
 	}
@@ -253,6 +282,21 @@ public class Utils {
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Checks if a webelement is displayed in screen checking its x and y coordinates.
+	 * 
+	 * @param driver: stores the web page.
+	 * @param WE: object to check.
+	 * @return: true if x and/or y are > 0. false if x and y are <= 0
+	 */
+	public static boolean isDisplayed(WebDriver driver, WebElement WE) {
+		if (WE.getLocation().x > 0 || WE.getLocation().y > 0) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 

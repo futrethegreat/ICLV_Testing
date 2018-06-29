@@ -146,6 +146,7 @@ public class ICLVToReceivePage {
 				break;
 			}
 		}
+		System.out.println("DocumentID: " + documentID);
 		return documentID;
 	}
 
@@ -159,6 +160,7 @@ public class ICLVToReceivePage {
 	public void setTxtNoteBox(WebDriver driver, String s) {
 		Utils.waitUntil_isClickable(driver, txtNoteBox);
 		txtNoteBox.clear();
+		System.out.println("Note to write: " + s);
 		txtNoteBox.sendKeys(s);
 	}
 	
@@ -170,6 +172,7 @@ public class ICLVToReceivePage {
 	public void clickBtnResolveQuery(WebDriver driver) throws InterruptedException  {
 		Utils.waitUntil_isClickable(driver, btnResolveQuery);
 		btnResolveQuery.click();
+		Thread.sleep(500);
 	}
 	
 	/**
