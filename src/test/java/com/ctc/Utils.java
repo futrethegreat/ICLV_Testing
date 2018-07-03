@@ -145,6 +145,28 @@ public class Utils {
 
 	/**
 	 * 
+	 * Waits for the selenium object "WE" is displayed in screen and return true.
+	 * After 10 seconds, should return false.
+	 * 
+	 * @param driver: stores the web page
+	 * @param WE: selenium object to find
+	 * @return: true if object is found. false if object is not found.
+	 * @throws TimeoutException
+	 * 
+	 */
+	public static void waitUntil_isPresent(final WebDriver driver, final WebElement WE) {
+		try {
+			WebDriverWait wait = new WebDriverWait(driver, secondsToWait);
+			wait.until(ExpectedConditions.visibilityOf(WE));
+		} catch (TimeoutException te) {
+			System.out.println("Error detecting clickable object: " + WE);
+			Assert.fail("Error detecting presence of object: " + WE);
+		}
+		
+	}
+
+	/**
+	 * 
 	 * Waits for the selenium object "locator" is hidden in screen and return true.
 	 * After 10 seconds, should return false.
 	 * 

@@ -12,15 +12,20 @@
 @ICLVPayment
 Feature: ICLVPayment
   This feature deals with making a payment in the ICLV using the web infrastructure.
-
-  Scenario Outline: Make a payment for the total amount. Should be successful.
+  - Process: 2186 ICLV Implementations.
+  - Activity: 31623  Pay now. Money will be deducted from ICLV account.
+  - Implementation: 1319 Pay invoice.
+  
+  Background: Common tasks for all scenarios
     Given I navigate to the ICLV home page
     When I click on Sign In link
     Then I should see the Login Page
-    When I enter <UserName> and <Password>
+    When I enter seleniumtesting and 123456Ab
     And I click Login button
     Then I should see the Tool main page
     Given I click the Payables link for "DANPER TRUJILLO S.A.C."
+    
+  Scenario: Make a payment for the total amount. Should be successful.
     When I click first invoice not disputed of "CAPITAL TOOL" to pay it
     And I click the Pay invoice implementation
     And I enter the amount "Full"
@@ -29,19 +34,8 @@ Feature: ICLVPayment
     And I click OK
     Then Open amount of invoice is decreased by "Full" 
     #And Amount in database is also updated
-
-    Examples: 
-      | UserName   | Password |
-      | seleniumtesting | 123456Ab |
       
-  Scenario Outline: Make a payment smaller than the total amount. Should be successful.
-    Given I navigate to the ICLV home page
-    When I click on Sign In link
-    Then I should see the Login Page
-    When I enter <UserName> and <Password>
-    And I click Login button
-    Then I should see the Tool main page
-    Given I click the Payables link for "DANPER TRUJILLO S.A.C."
+  Scenario: Make a payment smaller than the total amount. Should be successful.
     When I click first invoice not disputed of "CAPITAL TOOL" to pay it    
     And I click the Pay invoice implementation
     And I enter the amount "1.1"
@@ -51,61 +45,23 @@ Feature: ICLVPayment
     Then Open amount of invoice is decreased by "1.1" 
     #And Amount in database is also updated
 
-    Examples: 
-      | UserName   | Password |
-      | seleniumtesting | 123456Ab |
-      
-  Scenario Outline: Make a payment of 0. Should be not possible.
-    Given I navigate to the ICLV home page
-    When I click on Sign In link
-    Then I should see the Login Page
-    When I enter <UserName> and <Password>
-    And I click Login button
-    Then I should see the Tool main page
-    Given I click the Payables link for "DANPER TRUJILLO S.A.C."
+  Scenario: Make a payment of 0. Should be not possible.
     When I click first invoice not disputed of "CAPITAL TOOL" to pay it
     And I click the Pay invoice implementation
     And I enter the amount "0"
     And I click Execute
     Then the system should say it is not possible 
 
-    Examples: 
-      | UserName   | Password |
-      | seleniumtesting | 123456Ab |
-
-  Scenario Outline: Make a payment larger than the total amount. Should be not possible.
-    Given I navigate to the ICLV home page
-    When I click on Sign In link
-    Then I should see the Login Page
-    When I enter <UserName> and <Password>
-    And I click Login button
-    Then I should see the Tool main page
-    Given I click the Payables link for "DANPER TRUJILLO S.A.C."
+  Scenario: Make a payment larger than the total amount. Should be not possible.
     When I click first invoice not disputed of "CAPITAL TOOL" to pay it    
     And I click the Pay invoice implementation
     And I enter an amount larger than the remaining
     And I click Execute
     Then the system should say it is not possible 
 
-    Examples: 
-      | UserName   | Password |
-      | seleniumtesting | 123456Ab |
-      
-  Scenario Outline: Make a payment for a debtor with not enough funds.
-    Given I navigate to the ICLV home page
-    When I click on Sign In link
-    Then I should see the Login Page
-    When I enter <UserName> and <Password>
-    And I click Login button
-    Then I should see the Tool main page
-    Given I click the Payables link for "DANPER TRUJILLO S.A.C."
+  Scenario: Make a payment for a debtor with not enough funds.
     When I click first invoice not disputed of "LA HACIENDA" to pay it
     And I click the Pay invoice implementation
     And I enter the amount "Full"
     And I click Execute
     Then the system should say there is no sufficient amount 
-
-    Examples: 
-      | UserName   | Password |
-      | seleniumtesting | 123456Ab |
-      

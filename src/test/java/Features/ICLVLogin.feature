@@ -11,11 +11,16 @@
 @ICLVLogin
 Feature: ICLVLogin
   This feature deals with the login functionality of the ICLV web page.
+  - Process: -.
+  - Activity: -.
+  - Implementation: -.
 
-  Scenario Outline: Login with correct credentials and sign out afterwards.
+  Background: Common tasks for all scenarios
     Given I navigate to the ICLV home page
     When I click on Sign In link
     Then I should see the Login Page
+
+  Scenario Outline: Login with correct credentials and sign out afterwards.
     When I enter <UserName> and <Password>
     And I click Login button
     Then I should see the Tool main page
@@ -27,9 +32,6 @@ Feature: ICLVLogin
       | seleniumtesting | 123456Ab |
       
   Scenario Outline: Login with incorrect and empty credentials
-    Given I navigate to the ICLV home page
-    When I click on Sign In link
-    Then I should see the Login Page
     When I enter <UserName> and <Password>
     And I click Login button
     Then I should receive error message

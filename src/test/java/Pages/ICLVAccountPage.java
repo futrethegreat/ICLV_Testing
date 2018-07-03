@@ -234,7 +234,7 @@ public class ICLVAccountPage {
 	 * @return Confirmation code as string displayed in lblConfirmMsg object
 	 */
 	public String getCodeFromConfirmMsg(WebDriver driver) {
-		Utils.waitUntil_isClickable(driver, lblConfirmMsg);
+		Utils.waitUntil_isPresent(driver, lblConfirmMsg);
 		String msg = Utils.normalizeString(lblConfirmMsg.getText().trim());
 		int i = msg.indexOf("code is", 0);
 		msg = msg.substring(i + 8, i + 16); // i+8 = "is ". i+16 = "code is " + 8 digits of code

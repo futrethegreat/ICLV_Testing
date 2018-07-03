@@ -12,14 +12,22 @@
 @ICLVDispute
 Feature: ICLVDispute
   This feature deals with making a dispute in the ICLV using the web infrastructure.
+  - Process: 2186 ICLV Implementations.
+  - Activity: 31617 Query. Query the invoice.
+  - Implementation: 1325 ICLV dispute.
 
-  Scenario Outline: Make a dispute on an invoice for the full amount, however give a description too short.
+  Background: Common tasks for all scenarios
     Given I navigate to the ICLV home page
     When I click on Sign In link
     Then I should see the Login Page
-    When I enter <UserName> and <Password>
+    When I enter seleniumtesting and 123456Ab
     And I click Login button
     Then I should see the Tool main page
+
+  Scenario: Make a dispute on an invoice for the full amount, however give a description too short.
+  	Process: 2186 ICLV Implementations.
+  	Activity: 31617 Query. Query the invoice.
+  	Implementation: 1325 ICLV dispute.
     Given I click the Payables link for "DANPER TRUJILLO S.A.C."
     When I click first invoice to dispute of "CAPITAL TOOL COMPANY."
     And I click the Dispute invoice implementation
@@ -28,17 +36,10 @@ Feature: ICLVDispute
     And I click Execute
     Then the system should say it is too short
 
-    Examples: 
-      | UserName   | Password |
-      | seleniumtesting | 123456Ab |
-
-  Scenario Outline: Make a dispute on an invoice for the full amount. Should be successful.
-    Given I navigate to the ICLV home page
-    When I click on Sign In link
-    Then I should see the Login Page
-    When I enter <UserName> and <Password>
-    And I click Login button
-    Then I should see the Tool main page
+  Scenario: Make a dispute on an invoice for the full amount. Should be successful.
+  	Process: 2186 ICLV Implementations.
+  	Activity: 31617 Query. Query the invoice.
+  	Implementation: 1325 ICLV dispute.
     Given I click the Payables link for "DANPER TRUJILLO S.A.C."
     When I click first invoice to dispute of "CAPITAL TOOL COMPANY."
     And I click the Dispute invoice implementation
@@ -52,17 +53,10 @@ Feature: ICLVDispute
     When I click on debtor "DANPER TRUJILLO S.A.C."
     Then a task is created to resolve the invoice disputed
 
-    Examples: 
-      | UserName   | Password |
-      | seleniumtesting | 123456Ab |
-
-  Scenario Outline: Resolve an open dispute and check it returns to debtor.
-    Given I navigate to the ICLV home page
-    When I click on Sign In link
-    Then I should see the Login Page
-    When I enter <UserName> and <Password>
-    And I click Login button
-    Then I should see the Tool main page
+  Scenario: Resolve an open dispute and check it returns to debtor.
+  	Process: 2186 ICLV Implementations.
+  	Activity: 31619 Resolve. Review the query of the debtor, and provide a resolution to the query.
+  	Implementation: 1330 ICLV dispute solved.
     Given I click supplier To Receive tab
     When I click on debtor "DANPER TRUJILLO S.A.C."
     And select a disputed invoice
@@ -72,17 +66,10 @@ Feature: ICLVDispute
     When I click invoice resolved
     Then it is pending to be approved
 
-    Examples: 
-      | UserName   | Password |
-      | seleniumtesting | 123456Ab |
-
-  Scenario Outline: Reject the solution given to a disputed invoice.
-    Given I navigate to the ICLV home page
-    When I click on Sign In link
-    Then I should see the Login Page
-    When I enter <UserName> and <Password>
-    And I click Login button
-    Then I should see the Tool main page
+  Scenario: Reject the solution given to a disputed invoice.
+  	Process: 2186 ICLV Implementations.
+  	Activity: 31834 Reject the dispute.
+  	Implementation: 1334 ICLV dispute resolution rejected.
     Given I click the Payables link for "DANPER TRUJILLO S.A.C."
     When I click first invoice in "Solved" status
     And I click the Rejected dispute implementation
@@ -92,17 +79,10 @@ Feature: ICLVDispute
     And I click OK
     Then the invoice status changes to "Dispute"
 
-    Examples: 
-      | UserName   | Password |
-      | seleniumtesting | 123456Ab |
-
-  Scenario Outline: Resolve an open dispute and check it returns to debtor.
-    Given I navigate to the ICLV home page
-    When I click on Sign In link
-    Then I should see the Login Page
-    When I enter <UserName> and <Password>
-    And I click Login button
-    Then I should see the Tool main page
+  Scenario: Resolve an open dispute and check it returns to debtor.
+  	Process: 2186 ICLV Implementations.
+  	Activity: 31619 Resolve. Review the query of the debtor, and provide a resolution to the query.
+  	Implementation: 1330 ICLV dispute solved.
     Given I click supplier To Receive tab
     When I click on debtor "DANPER TRUJILLO S.A.C."
     And select a disputed invoice
@@ -112,17 +92,10 @@ Feature: ICLVDispute
     When I click invoice resolved
     Then it is pending to be approved
 
-    Examples: 
-      | UserName   | Password |
-      | seleniumtesting | 123456Ab |
-
-  Scenario Outline: Accept the solution given to a disputed invoice.
-    Given I navigate to the ICLV home page
-    When I click on Sign In link
-    Then I should see the Login Page
-    When I enter <UserName> and <Password>
-    And I click Login button
-    Then I should see the Tool main page
+  Scenario: Approve the solution given to a disputed invoice.
+  	Process: 2186 ICLV Implementations.
+  	Activity: 31832 Approved. Approve the resolution that was supplied to the query.
+  	Implementation: 1332 ICLV dispute resolution approved.
     Given I click the Payables link for "DANPER TRUJILLO S.A.C."
     When I click first invoice in "Solved" status
     And I click the Approved dispute implementation
@@ -131,8 +104,3 @@ Feature: ICLVDispute
     And I enter "123456Ab" as password and the code provided
     And I click OK
     Then the invoice status changes to "Solved and approved"
-
-    Examples: 
-      | UserName   | Password |
-      | seleniumtesting | 123456Ab |
-      
